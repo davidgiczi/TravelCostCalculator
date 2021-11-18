@@ -43,7 +43,7 @@ public class DaysOfMonthDisplayer {
 	private JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu chooseTemplate = new JMenu("Sablon fájl választása");
-		JMenu createTemplate = new JMenu("Sablon fájl létrehozása");
+		JMenu createTemplate = new JMenu("Sablon fájl létrehozása/módosítása");
 		JMenu createPdfFile = new JMenu("Pdf fájl létrehozása");
 		chooseTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		createTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));

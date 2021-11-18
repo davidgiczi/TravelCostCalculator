@@ -1,12 +1,12 @@
 package com.david.giczi.calculator.controller.app;
 
-import com.david.giczi.calculator.view.DaysOfMonthDisplayer;
+import com.david.giczi.calculator.view.TemplateFileDisplayer;
 
 public class TravelCostCalculatorApp {
 
 	public static void main(String[] args) {
 		
-		new DaysOfMonthDisplayer();
+		new TemplateFileDisplayer();
 
 	}
 
