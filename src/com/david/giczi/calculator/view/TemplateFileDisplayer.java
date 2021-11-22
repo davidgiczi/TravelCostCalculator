@@ -1,5 +1,6 @@
 package com.david.giczi.calculator.view;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -12,7 +13,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.JTextField;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
@@ -21,25 +21,28 @@ public class TemplateFileDisplayer {
 
 	private JFrame jFrame;
 	private Font font = new Font("Times New Roman", Font.BOLD, 20);
+	private Color textColor = new Color(112, 128, 180);
 	private JComboBox<String> jComboBox = new JComboBox<>();
-	private JTextField jTextFieldForWorkerName = new JTextField(30);
-	private JTextField jTextFieldForWorkerAddress = new JTextField(30);
-	private JTextField jTextFieldForEmployerName = new JTextField(30);
-	private JTextField jTextFieldForEmployerAddress = new JTextField(30);
-	private JTextField jTextFieldForTravelDistance = new JTextField(10);
-	private JTextField jTextFieldForTravelPrice = new JTextField(10);
-
+	private JLabel jLabelForWorkerName = new JLabel();
+	private JLabel jLabelForWorkerAddress = new JLabel();
+	private JLabel jLabelForEmployerName = new JLabel();
+	private JLabel jLabelForEmployerAddress = new JLabel();
+	private JLabel jLabelForTravelDistance = new JLabel();
+	private JLabel jLabelForTravelPrice = new JLabel();
+	
+	
 	public TemplateFileDisplayer(String workerName, String workerAddress,
 			String employerName, String employerAddress, String distance, String price) {
 		jFrame = new JFrame("Sablon fájl választása");
 		addComboBoxToFrame();
+		addSeparatorToFrame();
 		getDisplayer();
-		jTextFieldForWorkerName.setText(workerName);
-		jTextFieldForWorkerAddress.setText(workerAddress);
-		jTextFieldForEmployerName.setText(employerName);
-		jTextFieldForEmployerAddress.setText(employerAddress);
-		jTextFieldForTravelDistance.setText(distance);
-		jTextFieldForTravelPrice.setText(price);
+		jLabelForWorkerName.setText(workerName);
+		jLabelForWorkerAddress.setText(workerAddress);
+		jLabelForEmployerName.setText(employerName);
+		jLabelForEmployerAddress.setText(employerAddress);
+		jLabelForTravelDistance.setText(distance);
+		jLabelForTravelPrice.setText(price);
 		addTemplateFileDataToFrame();
 	}
 
@@ -59,6 +62,28 @@ public class TemplateFileDisplayer {
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu createTemplate = new JMenu("Sablon fájl létrehozása/módosítása");
+		createTemplate.addMenuListener(new MenuListener() {
+			
+			@Override
+			public void menuSelected(MenuEvent e) {
+				
+				jFrame.setVisible(false);
+				new TemplateFileCreatingDisplayer();
+			}
+			
+			@Override
+			public void menuDeselected(MenuEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void menuCanceled(MenuEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		JMenu addWorkDays = new JMenu("Munkanapok megadása");
 		addWorkDays.addMenuListener(new MenuListener() {
 			
@@ -99,55 +124,65 @@ public class TemplateFileDisplayer {
 		jPanel.add(Box.createHorizontalStrut(30));
 		jPanel.add(jComboBox);
 		jFrame.add(jPanel);
+		
+	}
+	
+	private void addSeparatorToFrame() {
 		JSeparator separator = new JSeparator();
 		jFrame.add(separator);
-		
-		
 	}
 	
 	private void addTemplateFileDataToFrame() {
 		JPanel jPanelForWorkerName = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel jLabelForWorkerName = new JLabel("A dolgozó neve:");
-		jPanelForWorkerName.add(jLabelForWorkerName);
+		JLabel workerName = new JLabel("A dolgozó neve:");
+		jPanelForWorkerName.add(workerName);
 		jPanelForWorkerName.add(Box.createHorizontalStrut(30));
-		jTextFieldForWorkerName.setFont(font);
-		jPanelForWorkerName.add(jTextFieldForWorkerName);
+		jLabelForWorkerName.setFont(font);
+		jLabelForWorkerName.setForeground(textColor);
+		jPanelForWorkerName.add(jLabelForWorkerName);
 		
 		JPanel jPanelForWorkerAddress = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel jLabelForWorkerAddress = new JLabel("A dolgozó címe:");
+		JLabel workerAddress = new JLabel("A dolgozó címe:");
+		jPanelForWorkerAddress.add(workerAddress);
+		jPanelForWorkerAddress.add(Box.createHorizontalStrut(30));
+		jLabelForWorkerAddress.setFont(font);
+		jLabelForWorkerAddress.setForeground(textColor);
 		jPanelForWorkerAddress.add(jLabelForWorkerAddress);
-		jPanelForWorkerAddress.add(Box.createHorizontalStrut(31));
-		jTextFieldForWorkerAddress.setFont(font);
-		jPanelForWorkerAddress.add(jTextFieldForWorkerAddress);
 		
 		JPanel jPanelForEmployeeName = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel jLabelForEmployeeName = new JLabel("A munkahely neve:");
-		jPanelForEmployeeName.add(jLabelForEmployeeName);
-		jPanelForEmployeeName.add(Box.createHorizontalStrut(14));
-		jTextFieldForEmployerName.setFont(font);
-		jPanelForEmployeeName.add(jTextFieldForEmployerName);
+		JLabel employeeName = new JLabel("A munkahely neve:");
+		jPanelForEmployeeName.add(employeeName);
+		jPanelForEmployeeName.add(Box.createHorizontalStrut(15));
+		jLabelForEmployerName.setFont(font);
+		jLabelForEmployerName.setForeground(textColor);
+		jPanelForEmployeeName.add(jLabelForEmployerName);
 		
 		JPanel jPanelForEmployeeAddress = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel jLabelForEmployeeAddress = new JLabel("A munkahely címe:");
-		jPanelForEmployeeAddress.add(jLabelForEmployeeAddress);
+		JLabel employeeAddress = new JLabel("A munkahely címe:");
+		jPanelForEmployeeAddress.add(employeeAddress);
 		jPanelForEmployeeAddress.add(Box.createHorizontalStrut(15));
-		jTextFieldForEmployerAddress.setFont(font);
-		jPanelForEmployeeAddress.add(jTextFieldForEmployerAddress);
+		jLabelForEmployerAddress.setFont(font);
+		jLabelForEmployerAddress.setForeground(textColor);
+		jPanelForEmployeeAddress.add(jLabelForEmployerAddress);
 		
 		JPanel jPanelForTravelCostData = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel jLabelForTravelDistance = new JLabel("Távolság:");
+		JLabel travelDistance = new JLabel("Távolság:");
 		JLabel jLabelForDistanceUnit = new JLabel("km");
+		jPanelForTravelCostData.add(travelDistance);
+		jPanelForTravelCostData.add(Box.createHorizontalStrut(65));
+		jLabelForTravelDistance.setFont(font);
+		jLabelForTravelDistance.setForeground(textColor);
 		jPanelForTravelCostData.add(jLabelForTravelDistance);
-		jPanelForTravelCostData.add(Box.createHorizontalStrut(62));
-		jTextFieldForTravelDistance.setFont(font);
-		jPanelForTravelCostData.add(jTextFieldForTravelDistance);
+		jPanelForTravelCostData.add(Box.createHorizontalStrut(10));
 		jPanelForTravelCostData.add(jLabelForDistanceUnit);
-		jPanelForTravelCostData.add(Box.createHorizontalStrut(20));
-		JLabel jLabelForTravelPrice = new JLabel("Elszámolási díj:");
+		jPanelForTravelCostData.add(Box.createHorizontalStrut(30));
+		JLabel travelPrice = new JLabel("Elszámolási díj:");
+		jPanelForTravelCostData.add(travelPrice);
+		jPanelForTravelCostData.add(Box.createHorizontalStrut(30));
+		jLabelForTravelPrice.setFont(font);
+		jLabelForTravelPrice.setForeground(textColor);
 		jPanelForTravelCostData.add(jLabelForTravelPrice);
-		jPanelForTravelCostData.add(Box.createHorizontalStrut(18));
-		jTextFieldForTravelPrice.setFont(font);
-		jPanelForTravelCostData.add(jTextFieldForTravelPrice);
+		jPanelForTravelCostData.add(Box.createHorizontalStrut(10));
 		JLabel jLabelForPriceUnit = new JLabel("Ft/km");
 		jPanelForTravelCostData.add(jLabelForPriceUnit);
 		

@@ -12,6 +12,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
 
 public class DaysOfMonthDisplayer {
 
@@ -43,13 +45,33 @@ public class DaysOfMonthDisplayer {
 	private JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu chooseTemplate = new JMenu("Sablon fájl választása");
-		JMenu createTemplate = new JMenu("Sablon fájl létrehozása/módosítása");
+		chooseTemplate.addMenuListener(new MenuListener() {
+			
+			@Override
+			public void menuSelected(MenuEvent e) {
+				
+				jFrame.setVisible(false);
+				new TemplateFileDisplayer("Giczi Dávid", "1125 Budapest, Diós árok 25/B.",
+						 "GeoLink3D Kft.", "2120 Dunakeszi, Barátság út 4 A. lház. IV. em. 6.", "22", "15");
+				
+			}
+			
+			@Override
+			public void menuDeselected(MenuEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void menuCanceled(MenuEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		JMenu createPdfFile = new JMenu("Pdf fájl létrehozása");
 		chooseTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		createTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		createPdfFile.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menuBar.add(chooseTemplate);
-		menuBar.add(createTemplate);
 		menuBar.add(createPdfFile);
 		return menuBar;
 	}
