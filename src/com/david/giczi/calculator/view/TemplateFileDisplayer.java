@@ -62,28 +62,6 @@ public class TemplateFileDisplayer {
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu createTemplate = new JMenu("Sablon fájl létrehozása/módosítása");
-		createTemplate.addMenuListener(new MenuListener() {
-			
-			@Override
-			public void menuSelected(MenuEvent e) {
-				
-				jFrame.setVisible(false);
-				new TemplateFileCreatingDisplayer();
-			}
-			
-			@Override
-			public void menuDeselected(MenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void menuCanceled(MenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
 		JMenu addWorkDays = new JMenu("Munkanapok megadása");
 		addWorkDays.addMenuListener(new MenuListener() {
 			
@@ -118,6 +96,7 @@ public class TemplateFileDisplayer {
 	
 	private void addComboBoxToFrame() {
 		jComboBox.addItem("    -     ");
+		jComboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel jLabel = new JLabel("Sablon fájl választása:");
 		jPanel.add(jLabel);

@@ -14,8 +14,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
 
 
 public class TemplateFileCreatingDisplayer {
@@ -58,29 +56,6 @@ private JMenuBar getMenuBar() {
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu createTemplate = new JMenu("Sablon fájl választása");
-		createTemplate.addMenuListener(new MenuListener() {
-			
-			@Override
-			public void menuSelected(MenuEvent e) {
-				
-				jFrame.setVisible(false);
-				new TemplateFileDisplayer("Giczi Dávid", "1125 Budapest, Diós árok 25/B.",
-						 "GeoLink3D Kft.", "2120 Dunakeszi, Barátság út 4 A. lház. IV. em. 6.", "22", "15");
-				
-			}
-			
-			@Override
-			public void menuDeselected(MenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void menuCanceled(MenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		createTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menuBar.add(createTemplate);
 		
@@ -168,6 +143,7 @@ private void addSaveButtonToFrame() {
 	
 	JPanel jPanelForSaveButton = new JPanel();
 	jButtonForSaveData.setFont(font);
+	jButtonForSaveData.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	jPanelForSaveButton.add(jButtonForSaveData);
 	jFrame.add(jPanelForSaveButton);
 	

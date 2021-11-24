@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -12,8 +14,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
+
+import com.david.giczi.calculator.model.Day;
 
 public class DaysOfMonthDisplayer {
 
@@ -26,8 +28,6 @@ public class DaysOfMonthDisplayer {
 		jFrame = new JFrame("Munkanapok megadása");
 		getDisplayer();
 		addNamesOfDaysPanelToTheFrame();
-		addButtonsOfDaysToTheFrame();
-		addOtherMonthAskingLabelsToTheFrame("November");
 	}
 	
 	private void getDisplayer() {
@@ -45,29 +45,6 @@ public class DaysOfMonthDisplayer {
 	private JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu chooseTemplate = new JMenu("Sablon fájl választása");
-		chooseTemplate.addMenuListener(new MenuListener() {
-			
-			@Override
-			public void menuSelected(MenuEvent e) {
-				
-				jFrame.setVisible(false);
-				new TemplateFileDisplayer("Giczi Dávid", "1125 Budapest, Diós árok 25/B.",
-						 "GeoLink3D Kft.", "2120 Dunakeszi, Barátság út 4 A. lház. IV. em. 6.", "22", "15");
-				
-			}
-			
-			@Override
-			public void menuDeselected(MenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void menuCanceled(MenuEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
 		JMenu createPdfFile = new JMenu("Pdf fájl létrehozása");
 		chooseTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		createPdfFile.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -94,7 +71,7 @@ public class DaysOfMonthDisplayer {
 	
 
 	
-	private void addButtonsOfDaysToTheFrame() {
+	private void addButtonsOfDaysToTheFrame(List<Day> dayStore) {
 		
 		jButtonStoreForDays = new JButton[35];
 			
@@ -106,11 +83,18 @@ public class DaysOfMonthDisplayer {
 			for(int j = 0; j < 7; j++) {
 				jButtonStoreForDays[i * 7 + j] = new JButton();
 				jButtonStoreForDays[i * 7 + j].setCursor(new Cursor(Cursor.HAND_CURSOR));
-				if(j == 5 || j == 6) {
-				jButtonStoreForDays[i * 7 + j].setBackground(new Color(255, 255, 212)); 
+				if(dayStore.get(i * 7 + j).isWorkDay()) {
+				jButtonStoreForDays[i * 7 + j].setBackground(new Color(212, 235, 242)); 
 				}
 				else {
-				jButtonStoreForDays[i * 7 + j].setBackground(new Color(212, 235, 242));
+				jButtonStoreForDays[i * 7 + j].setBackground(new Color(255, 255, 212));
+				}
+				
+				if(dayStore.get(i * 7 + j).getNumberOfMonth() != -1) {
+					jButtonStoreForDays[i * 7 + j].setText(String.valueOf(dayStore.get(i * 7 + j).getNumberOfMonth()));
+				}
+				else {
+					jButtonStoreForDays[i * 7 + j].setEnabled(false);
 				}
 				rowPanel.add(jButtonStoreForDays[i * 7 + j]);
 			}
@@ -119,7 +103,7 @@ public class DaysOfMonthDisplayer {
 		}
 	}
 	
-	private void addOtherMonthAskingLabelsToTheFrame(String month) {
+	public void addOtherMonthAskingLabelsToTheFrame(String yearDotMonth) {
 
 		JPanel lastRowPanel = new JPanel();
 		lastRowPanel.setLayout(new BorderLayout());
@@ -128,7 +112,7 @@ public class DaysOfMonthDisplayer {
 		nextMonth.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JLabel prevMonth= new JLabel("          <<");
 		prevMonth.setFont(font);
-		JLabel actualMonth= new JLabel(month);
+		JLabel actualMonth= new JLabel(yearDotMonth);
 		actualMonth.setFont(font);
 		actualMonth.setHorizontalAlignment(SwingConstants.CENTER);
 		prevMonth.setCursor(new Cursor(Cursor.HAND_CURSOR));
