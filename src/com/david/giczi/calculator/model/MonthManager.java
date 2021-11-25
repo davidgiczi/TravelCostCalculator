@@ -9,11 +9,8 @@ public class MonthManager {
 
 	public static String[] PUBLIC_HOLIDAYS = {"0-1", "2-15", "4-1", "7-20", "9-23", "10-1", "11-25", "11-26"};
 	public static int ACTUAL_YEAR = Calendar.getInstance().get(Calendar.YEAR);
+	public static int ACTUAL_MONTH = Calendar.getInstance().get(Calendar.MONTH);
 
-	
-	public int getActualMonthValue() {	
-		return Calendar.getInstance().get(Calendar.MONTH);
-	}
 	
 	public int getDaysOfMonth(int yearValue, int monthValue) {
 		return YearMonth.of(yearValue, monthValue + 1).lengthOfMonth();
@@ -68,12 +65,132 @@ public class MonthManager {
 		return "Érvénytelen hónap";
 	}
 	
+	public Integer[] increaseMonth(String yearDotMonth) {
+		
+		String[] yearDotMonthComponents = yearDotMonth.split("\\.");
+		int yearValue = Integer.parseInt(yearDotMonthComponents[0]);
+		String monthName = yearDotMonthComponents[1].trim();
+		Integer[] increasedValues = new Integer[2];
+		
+		switch (monthName) {
+		case "január":
+			increasedValues[0] = 1;
+			increasedValues[1] = yearValue;
+			break;
+		case "február":
+			increasedValues[0] = 2;
+			increasedValues[1] = yearValue;
+			break;
+		case "március":
+			increasedValues[0] = 3;
+			increasedValues[1] = yearValue;
+			break;
+		case "április":
+			increasedValues[0] = 4;
+			increasedValues[1] = yearValue;
+			break;
+		case "május":
+			increasedValues[0] = 5;
+			increasedValues[1] = yearValue;
+			break;
+		case "június":
+			increasedValues[0] = 6;
+			increasedValues[1] = yearValue;
+			break;
+		case "július":
+			increasedValues[0] = 7;
+			increasedValues[1] = yearValue;
+			break;
+		case "augusztus":
+			increasedValues[0] = 8;
+			increasedValues[1] = yearValue;
+			break;
+		case "szeptember":
+			increasedValues[0] = 9;
+			increasedValues[1] = yearValue;
+			break;
+		case "október":
+			increasedValues[0] = 10;
+			increasedValues[1] = yearValue;
+			break;
+		case "november":
+			increasedValues[0] = 11;
+			increasedValues[1] = yearValue;
+			break;
+		case "december":
+			increasedValues[0] = 0;
+			increasedValues[1] = ++yearValue;	
+		}
+		
+		return increasedValues;
+	}
+	
+	public Integer[] decreaseMonth(String yearDotMonth) {
+		
+		String[] yearDotMonthComponents = yearDotMonth.split("\\.");
+		int yearValue = Integer.parseInt(yearDotMonthComponents[0]);
+		String monthName = yearDotMonthComponents[1].trim();
+		Integer[] decreasedValues = new Integer[2];
+		
+		switch (monthName) {
+		case "január":
+			decreasedValues[0] = 11;
+			decreasedValues[1] = --yearValue;
+			break;
+		case "február":
+			decreasedValues[0] = 0;
+			decreasedValues[1] = yearValue;
+			break;
+		case "március":
+			decreasedValues[0] = 1;
+			decreasedValues[1] = yearValue;
+			break;
+		case "április":
+			decreasedValues[0] = 2;
+			decreasedValues[1] = yearValue;
+			break;
+		case "május":
+			decreasedValues[0] = 3;
+			decreasedValues[1] = yearValue;
+			break;
+		case "június":
+			decreasedValues[0] = 4;
+			decreasedValues[1] = yearValue;
+			break;
+		case "július":
+			decreasedValues[0] = 5;
+			decreasedValues[1] = yearValue;
+			break;
+		case "augusztus":
+			decreasedValues[0] = 6;
+			decreasedValues[1] = yearValue;
+			break;
+		case "szeptember":
+			decreasedValues[0] = 7;
+			decreasedValues[1] = yearValue;
+			break;
+		case "október":
+			decreasedValues[0] = 8;
+			decreasedValues[1] = yearValue;
+			break;
+		case "november":
+			decreasedValues[0] = 9;
+			decreasedValues[1] = yearValue;
+			break;
+		case "december":
+			decreasedValues[0] = 10;
+			decreasedValues[1] = yearValue;	
+		}
+		
+		return decreasedValues;
+	}
+	
 	public List<Day> createMonth(int yearValue, int monthValue){
 		
 	List<Day> month = new ArrayList<>();
 	int dayCounter = 1;
 	
-	for(int i = 1; i < 36; i++) {
+	for(int i = 1; i < 43; i++) {
 		
 		Day day = new Day();
 		
@@ -125,5 +242,5 @@ public class MonthManager {
 		
 		return month;
 	}
-		
+	
 }
