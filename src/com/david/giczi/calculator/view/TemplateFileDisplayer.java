@@ -31,21 +31,14 @@ public class TemplateFileDisplayer {
 	private JLabel jLabelForTravelPrice = new JLabel();
 	
 	
-	public TemplateFileDisplayer(String workerName, String workerAddress,
-			String employerName, String employerAddress, String distance, String price) {
-		jFrame = new JFrame("Sablon fájl választása");
+	public TemplateFileDisplayer() {
+		jFrame = new JFrame("Dolgozói adatok fájl választása");
 		addComboBoxToFrame();
 		addSeparatorToFrame();
 		getDisplayer();
-		jLabelForWorkerName.setText(workerName);
-		jLabelForWorkerAddress.setText(workerAddress);
-		jLabelForEmployerName.setText(employerName);
-		jLabelForEmployerAddress.setText(employerAddress);
-		jLabelForTravelDistance.setText(distance);
-		jLabelForTravelPrice.setText(price);
 		addTemplateFileDataToFrame();
 	}
-
+	
 	private void getDisplayer() {
 
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,7 +54,7 @@ public class TemplateFileDisplayer {
 	private JMenuBar getMenuBar() {
 		
 		JMenuBar menuBar = new JMenuBar();
-		JMenu createTemplate = new JMenu("Sablon fájl létrehozása/módosítása");
+		JMenu createTemplate = new JMenu("Dolgozói adatok fájl létrehozása/módosítása");
 		JMenu addWorkDays = new JMenu("Munkanapok megadása");
 		addWorkDays.addMenuListener(new MenuListener() {
 			
@@ -98,7 +91,7 @@ public class TemplateFileDisplayer {
 		jComboBox.addItem("    -     ");
 		jComboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		JLabel jLabel = new JLabel("Sablon fájl választása:");
+		JLabel jLabel = new JLabel("Dolgozói adatok fájl választása:");
 		jPanel.add(jLabel);
 		jPanel.add(Box.createHorizontalStrut(30));
 		jPanel.add(jComboBox);
@@ -172,4 +165,14 @@ public class TemplateFileDisplayer {
 		jFrame.add(jPanelForTravelCostData);
 	}
 
+	public void setData(String workerName, String workerAddress,
+			String employerName, String employerAddress, String distance, String price) {
+		jLabelForWorkerName.setText(workerName);
+		jLabelForWorkerAddress.setText(workerAddress);
+		jLabelForEmployerName.setText(employerName);
+		jLabelForEmployerAddress.setText(employerAddress);
+		jLabelForTravelDistance.setText(distance);
+		jLabelForTravelPrice.setText(price);
+	}
+	
 }

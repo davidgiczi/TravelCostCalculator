@@ -51,10 +51,4 @@ public class DaysOfMonthDisplayerController {
 		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame(previousYear + ". " + monthManager.getMonthName(previousMonth));
 	}
 	
-	
-	
-
-	public static void main(String[] args) {
-		new DaysOfMonthDisplayerController().createDaysOfMonthDisplayer();
-	}
 }

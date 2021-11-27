@@ -5,15 +5,21 @@ import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
+
+import com.david.giczi.calculator.controller.TemplateFileCreatingDisplayerController;
 
 
 public class TemplateFileCreatingDisplayer {
@@ -30,10 +36,16 @@ public class TemplateFileCreatingDisplayer {
 	private JTextField jTextFieldForTravelPrice = new JTextField(10);
 	private JTextField jTextFieldForFileName = new JTextField(10);
 	private JButton jButtonForSaveData = new JButton("Mentés");
+	public Boolean isActiveDisplayer;
 	
-	public TemplateFileCreatingDisplayer() {
-	
-		jFrame = new JFrame("Sablon fájl létrehozása/módosítása");
+	public void setIsActiveDisplayer(Boolean isActiveDisplayer) {
+		this.isActiveDisplayer = isActiveDisplayer;
+	}
+
+	public TemplateFileCreatingDisplayer(Boolean isActiveDisplayer) {
+		
+		this.isActiveDisplayer = isActiveDisplayer;
+		jFrame = new JFrame("Dolgozói adatok fájl létrehozása/módosítása");
 		getDisplayer();
 		addTemplateFileDataToFrame();
 		addSeparatorToFrame();
@@ -55,10 +67,12 @@ public class TemplateFileCreatingDisplayer {
 private JMenuBar getMenuBar() {
 		
 		JMenuBar menuBar = new JMenuBar();
-		JMenu createTemplate = new JMenu("Sablon fájl választása");
+		JMenu createTemplate = new JMenu("Dolgozói adatok fájl választása");
 		createTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menuBar.add(createTemplate);
-		
+		if( !isActiveDisplayer ) {
+			createTemplate.setEnabled(false);
+		}
 		return menuBar;
 	}
 	
@@ -115,9 +129,9 @@ private void addTemplateFileDataToFrame() {
 	jPanelForTravelCostData.add(jLabelForPriceUnit);
 	
 	JPanel jPanelForFileName = new JPanel(new FlowLayout(FlowLayout.LEFT));
-	JLabel jLabelForFileName = new JLabel("Sablon fájl neve:");
+	JLabel jLabelForFileName = new JLabel("Mentési fájl neve:");
 	jPanelForFileName.add(jLabelForFileName);
-	jPanelForFileName.add(Box.createHorizontalStrut(26));
+	jPanelForFileName.add(Box.createHorizontalStrut(20));
 	jTextFieldForFileName.setFont(font);
 	jTextFieldForFileName.setForeground(textColor);
 	jPanelForFileName.add(jTextFieldForFileName);
@@ -144,9 +158,55 @@ private void addSaveButtonToFrame() {
 	JPanel jPanelForSaveButton = new JPanel();
 	jButtonForSaveData.setFont(font);
 	jButtonForSaveData.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	jButtonForSaveData.addActionListener(new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if( !new TemplateFileCreatingDisplayerController()
+					.isValidInputString(jTextFieldForWorkerName.getText(), 
+										jTextFieldForWorkerAddress.getText(),
+										jTextFieldForEmployerName.getText(), 
+										jTextFieldForEmployerAddress.getText(), 
+										jTextFieldForTravelDistance.getText(),
+										jTextFieldForTravelPrice.getText(), 
+										jTextFieldForFileName.getText())) {
+				
+				getWarningMessage("Minden adatbeviteli mezõ kitöltése szükséges.", "Hiányzó adat");
+				return;
+			}
+			
+			if( !new TemplateFileCreatingDisplayerController()
+					.isValidInputNumber(jTextFieldForTravelDistance.getText(),
+										jTextFieldForTravelPrice.getText())) {
+				
+				getWarningMessage("A \"Távolság\" és az \"Elszámolási díj\" mezõk értéke csak szám lehet.", "Hibás adat");
+				return;
+			}
+			
+			System.out.println(new TemplateFileCreatingDisplayerController()
+					.readInputData(jTextFieldForWorkerName.getText(), 
+					jTextFieldForWorkerAddress.getText(),
+					jTextFieldForEmployerName.getText(), 
+					jTextFieldForEmployerAddress.getText(), 
+					jTextFieldForTravelDistance.getText(),
+					jTextFieldForTravelPrice.getText(), 
+					jTextFieldForFileName.getText()));
+			
+		}
+	});
+	
 	jPanelForSaveButton.add(jButtonForSaveData);
 	jFrame.add(jPanelForSaveButton);
 	
+}
+
+public void getInfoMessage(String infoMessage, String titleMessage) {
+	JOptionPane.showMessageDialog(null, infoMessage, titleMessage, JOptionPane.INFORMATION_MESSAGE);
+}
+
+public void getWarningMessage(String warningMessage, String titleMessage) {
+	JOptionPane.showMessageDialog(null, warningMessage, titleMessage, JOptionPane.WARNING_MESSAGE);
 }
 
 }

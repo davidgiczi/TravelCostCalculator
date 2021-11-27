@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
@@ -23,6 +25,8 @@ public class DaysOfMonthDisplayer {
 	private JFrame jFrame;
 	private Font font;
 	private JButton[] jButtonStoreForDays;
+	private Color BLUE = new Color(212, 235, 242);
+	private Color YELLOW = new Color(255, 255, 212);
 	
 	public DaysOfMonthDisplayer() {
 		
@@ -43,8 +47,8 @@ public class DaysOfMonthDisplayer {
 	
 	private JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
-		JMenu chooseTemplate = new JMenu("Sablon fájl választása");
-		JMenu createPdfFile = new JMenu("Pdf fájl létrehozása");
+		JMenu chooseTemplate = new JMenu("Dolgozói adatok fájl választása");
+		JMenu createPdfFile = new JMenu("Nyomtatvány fájl létrehozása");
 		chooseTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		createPdfFile.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menuBar.add(chooseTemplate);
@@ -83,15 +87,30 @@ public class DaysOfMonthDisplayer {
 				jButtonStoreForDays[i * 7 + j] = new JButton();
 				jButtonStoreForDays[i * 7 + j].setCursor(new Cursor(Cursor.HAND_CURSOR));
 				if(dayStore.get(i * 7 + j).isWorkDay()) {
-				jButtonStoreForDays[i * 7 + j].setBackground(new Color(212, 235, 242)); 
+				jButtonStoreForDays[i * 7 + j].setBackground(BLUE); 
 				}
 				else {
-				jButtonStoreForDays[i * 7 + j].setBackground(new Color(255, 255, 212));
+				jButtonStoreForDays[i * 7 + j].setBackground(YELLOW);
 				}
 				
 				if(dayStore.get(i * 7 + j).getNumberOfMonth() != -1) {
 					jButtonStoreForDays[i * 7 + j].setFont(font);
 					jButtonStoreForDays[i * 7 + j].setText(String.valueOf(dayStore.get(i * 7 + j).getNumberOfMonth()));
+					JButton dayButton = jButtonStoreForDays[i * 7 + j];
+					jButtonStoreForDays[i * 7 + j].addActionListener(new ActionListener() {
+						
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							
+							if(dayButton.getBackground().equals(BLUE)) {
+								dayButton.setBackground(YELLOW);
+							}
+							else {
+								dayButton.setBackground(BLUE);
+							}
+							
+						}
+					});
 				}
 				else {
 					jButtonStoreForDays[i * 7 + j].setEnabled(false);
