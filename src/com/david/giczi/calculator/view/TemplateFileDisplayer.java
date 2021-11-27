@@ -56,13 +56,13 @@ public class TemplateFileDisplayer {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu createTemplate = new JMenu("Dolgozói adatok fájl létrehozása/módosítása");
 		JMenu addWorkDays = new JMenu("Munkanapok megadása");
-		addWorkDays.addMenuListener(new MenuListener() {
+		createTemplate.addMenuListener(new MenuListener() {
 			
 			@Override
 			public void menuSelected(MenuEvent e) {
 				
 				jFrame.setVisible(false);
-				new DaysOfMonthDisplayer();
+				new TemplateFileCreatingDisplayer(true);
 				
 			}
 			

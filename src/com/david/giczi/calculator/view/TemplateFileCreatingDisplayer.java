@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
-
 import com.david.giczi.calculator.controller.TemplateFileCreatingDisplayerController;
 
 
@@ -163,7 +161,10 @@ private void addSaveButtonToFrame() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			if( !new TemplateFileCreatingDisplayerController()
+			TemplateFileCreatingDisplayerController templateFileCreatingDisplayerController 
+			= new TemplateFileCreatingDisplayerController();
+			
+			if( !templateFileCreatingDisplayerController
 					.isValidInputString(jTextFieldForWorkerName.getText(), 
 										jTextFieldForWorkerAddress.getText(),
 										jTextFieldForEmployerName.getText(), 
@@ -176,23 +177,46 @@ private void addSaveButtonToFrame() {
 				return;
 			}
 			
-			if( !new TemplateFileCreatingDisplayerController()
+			if( !templateFileCreatingDisplayerController
 					.isValidInputNumber(jTextFieldForTravelDistance.getText(),
 										jTextFieldForTravelPrice.getText())) {
 				
-				getWarningMessage("A \"Távolság\" és az \"Elszámolási díj\" mezõk értéke csak szám lehet.", "Hibás adat");
+				getWarningMessage("A \"Távolság\" és az \"Elszámolási díj\" mezõk értéke csak egész szám lehet.", "Hibás adat");
 				return;
 			}
-			
-			System.out.println(new TemplateFileCreatingDisplayerController()
-					.readInputData(jTextFieldForWorkerName.getText(), 
+				
+			if(templateFileCreatingDisplayerController.isTemplateFileExist(jTextFieldForFileName.getText())) {
+				
+				if (JOptionPane.showConfirmDialog(null,  "Felülírod?", "Létezõ fájl: " + jTextFieldForFileName.getText() + ".txt",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				    
+					templateFileCreatingDisplayerController
+					.saveInputData(jTextFieldForWorkerName.getText(), 
 					jTextFieldForWorkerAddress.getText(),
 					jTextFieldForEmployerName.getText(), 
 					jTextFieldForEmployerAddress.getText(), 
 					jTextFieldForTravelDistance.getText(),
 					jTextFieldForTravelPrice.getText(), 
-					jTextFieldForFileName.getText()));
-			
+					jTextFieldForFileName.getText());
+				} else {
+				    return;
+				}
+				
+			}
+			else {
+				
+				templateFileCreatingDisplayerController
+				.saveInputData(jTextFieldForWorkerName.getText(), 
+				jTextFieldForWorkerAddress.getText(),
+				jTextFieldForEmployerName.getText(), 
+				jTextFieldForEmployerAddress.getText(), 
+				jTextFieldForTravelDistance.getText(),
+				jTextFieldForTravelPrice.getText(), 
+				jTextFieldForFileName.getText());
+			}
+			getInfoMessage("\"" + jTextFieldForFileName.getText() + ".txt\" fájl mentve.", "Fájl mentése");
+			jFrame.setVisible(false);
+			new TemplateFileDisplayer();
 		}
 	});
 	

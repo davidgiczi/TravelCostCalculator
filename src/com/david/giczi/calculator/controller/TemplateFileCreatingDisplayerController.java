@@ -13,12 +13,14 @@ public class TemplateFileCreatingDisplayerController {
 		templateFileManager = new TemplateFileManager();
 	}
 	
+	public Boolean isTemplateFileExist(String fileName) {
+		return templateFileManager.isTemplateFileExist(fileName);
+	}
 	
-	public TemplateFileData readInputData(String workerName, String workerAddress, 
+	public void saveInputData(String workerName, String workerAddress, 
 			String employerName, String employerAddress, String distance, String price, String fileName) {
 		
 		TemplateFileData templateFileData = new TemplateFileData();
-		
 		templateFileData.setWorkerName(workerName);
 		templateFileData.setWorkerAddress(workerAddress);
 		templateFileData.setEmployerName(employerName);
@@ -26,8 +28,7 @@ public class TemplateFileCreatingDisplayerController {
 		templateFileData.setDistance(Integer.parseInt(distance));
 		templateFileData.setPricePerDistance(Integer.parseInt(price));
 		templateFileData.setFileName(fileName);
-		
-		return templateFileData;
+		templateFileManager.saveInputData(templateFileData);
 	}
 	
 	
