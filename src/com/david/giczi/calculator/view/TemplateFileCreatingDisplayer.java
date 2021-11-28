@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import com.david.giczi.calculator.controller.TemplateFileCreatingDisplayerController;
+import com.david.giczi.calculator.model.TemplateFileManager;
 
 
 public class TemplateFileCreatingDisplayer {
@@ -216,7 +217,7 @@ private void addSaveButtonToFrame() {
 			}
 			getInfoMessage("\"" + jTextFieldForFileName.getText() + ".txt\" fájl mentve.", "Fájl mentése");
 			jFrame.setVisible(false);
-			new TemplateFileDisplayer();
+			new TemplateFileDisplayer(new TemplateFileManager().getFileNames());
 		}
 	});
 	

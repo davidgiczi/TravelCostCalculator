@@ -5,7 +5,12 @@ import java.awt.Cursor;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.Box;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -13,8 +18,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import javax.swing.event.MenuEvent;
-import javax.swing.event.MenuListener;
+
+import com.david.giczi.calculator.controller.DaysOfMonthDisplayerController;
+import com.david.giczi.calculator.model.TemplateFileManager;
 
 
 public class TemplateFileDisplayer {
@@ -22,7 +28,7 @@ public class TemplateFileDisplayer {
 	private JFrame jFrame;
 	private Font font = new Font("Times New Roman", Font.BOLD, 20);
 	private Color textColor = new Color(112, 128, 180);
-	private JComboBox<String> jComboBox = new JComboBox<>();
+	private JComboBox<String> jComboBox;
 	private JLabel jLabelForWorkerName = new JLabel();
 	private JLabel jLabelForWorkerAddress = new JLabel();
 	private JLabel jLabelForEmployerName = new JLabel();
@@ -31,8 +37,9 @@ public class TemplateFileDisplayer {
 	private JLabel jLabelForTravelPrice = new JLabel();
 	
 	
-	public TemplateFileDisplayer() {
+	public TemplateFileDisplayer(String[] fileNames) {
 		jFrame = new JFrame("Dolgozói adatok fájl választása");
+		jComboBox = new JComboBox<>(fileNames);
 		addComboBoxToFrame();
 		addSeparatorToFrame();
 		getDisplayer();
@@ -56,26 +63,70 @@ public class TemplateFileDisplayer {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu createTemplate = new JMenu("Dolgozói adatok fájl létrehozása/módosítása");
 		JMenu addWorkDays = new JMenu("Munkanapok megadása");
-		createTemplate.addMenuListener(new MenuListener() {
+		createTemplate.addMouseListener(new MouseListener() {
 			
 			@Override
-			public void menuSelected(MenuEvent e) {
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				
 				jFrame.setVisible(false);
 				new TemplateFileCreatingDisplayer(true);
-				
 			}
+		});
+		
+		addWorkDays.addMouseListener(new MouseListener() {
 			
 			@Override
-			public void menuDeselected(MenuEvent e) {
+			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
 			}
 			
 			@Override
-			public void menuCanceled(MenuEvent e) {
+			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
 				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				 jFrame.setVisible(false);
+				 new DaysOfMonthDisplayerController().createDaysOfMonthDisplayer();
 			}
 		});
 		
@@ -88,8 +139,36 @@ public class TemplateFileDisplayer {
 	}
 	
 	private void addComboBoxToFrame() {
-		jComboBox.addItem("    -     ");
+		DefaultListCellRenderer renderer = new DefaultListCellRenderer();
+		renderer.setHorizontalAlignment(DefaultListCellRenderer.CENTER);
+		jComboBox.setRenderer(renderer);
 		jComboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		jComboBox.addActionListener(new ActionListener() {
+			
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			
+			if("-".equals(jComboBox.getSelectedItem().toString())) {	
+			jLabelForWorkerName.setText("");
+			jLabelForWorkerAddress.setText("");
+			jLabelForEmployerName.setText("");
+			jLabelForEmployerAddress.setText("");
+			jLabelForTravelDistance.setText("");
+			jLabelForTravelPrice.setText("");
+			}
+			else {
+				new TemplateFileManager().readTemplateFile(jComboBox.getSelectedItem().toString());
+				jLabelForWorkerName.setText(TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName());
+				jLabelForWorkerAddress.setText(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress());
+				jLabelForEmployerName.setText(TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName());
+				jLabelForEmployerAddress.setText(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress());
+				jLabelForTravelDistance.setText(String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getDistance()));
+				jLabelForTravelPrice.setText(String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getPricePerDistance()));
+			}
+		}
+	});
+		
 		JPanel jPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		JLabel jLabel = new JLabel("Dolgozói adatok fájl választása:");
 		jPanel.add(jLabel);

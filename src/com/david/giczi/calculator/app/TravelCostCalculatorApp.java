@@ -10,8 +10,8 @@ public class TravelCostCalculatorApp {
 		
 		TemplateFileManager fileManager = new TemplateFileManager();
 		
-		if(fileManager.isDataFolderExist() && !fileManager.getFileNames().isEmpty()) {
-			new TemplateFileDisplayer();
+		if(fileManager.isDataFolderExist() && fileManager.getFileNames().length != 1) {
+			new TemplateFileDisplayer(fileManager.getFileNames());
 		}
 		else {
 			TemplateFileCreatingDisplayer templateFileCreatingDisplayer = new TemplateFileCreatingDisplayer(false);
