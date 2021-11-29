@@ -83,6 +83,8 @@ public class TemplateFileManager {
 				writer.write(String.valueOf(data.getDistance()));
 				writer.newLine();
 				writer.write(String.valueOf(data.getPricePerDistance()));
+				writer.newLine();
+				writer.write(data.getPlate());
 			
 		} catch (IOException e) {
 			System.out.println( "\'"+ templateFile.getName() + "\' file cannot be created.");
@@ -105,6 +107,7 @@ public class TemplateFileManager {
 			TEMPLATE_FILE_DATA.setDistance(Integer.parseInt(reader.readLine()));
 			TEMPLATE_FILE_DATA.setPricePerDistance(Integer.parseInt(reader.readLine()));
 			TEMPLATE_FILE_DATA.setFileName(fileName);
+			TEMPLATE_FILE_DATA.setPlate(reader.readLine());
 			
 		} catch (IOException e) {
 			System.out.println("\'" + templateFile.getName() + "\' file cannot be created.");

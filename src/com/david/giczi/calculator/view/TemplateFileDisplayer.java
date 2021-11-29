@@ -18,7 +18,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
-
 import com.david.giczi.calculator.controller.DaysOfMonthDisplayerController;
 import com.david.giczi.calculator.model.TemplateFileManager;
 
@@ -35,11 +34,14 @@ public class TemplateFileDisplayer {
 	private JLabel jLabelForEmployerAddress = new JLabel();
 	private JLabel jLabelForTravelDistance = new JLabel();
 	private JLabel jLabelForTravelPrice = new JLabel();
+	private JLabel jLabelForPlate = new JLabel();
+	private JMenu addWorkDays = new JMenu("Munkanapok megadása");
 	
 	
 	public TemplateFileDisplayer(String[] fileNames) {
 		jFrame = new JFrame("Dolgozói adatok fájl választása");
 		jComboBox = new JComboBox<>(fileNames);
+		addWorkDays.setEnabled(false);
 		addComboBoxToFrame();
 		addSeparatorToFrame();
 		getDisplayer();
@@ -62,7 +64,6 @@ public class TemplateFileDisplayer {
 		
 		JMenuBar menuBar = new JMenuBar();
 		JMenu createTemplate = new JMenu("Dolgozói adatok fájl létrehozása/módosítása");
-		JMenu addWorkDays = new JMenu("Munkanapok megadása");
 		createTemplate.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -93,7 +94,19 @@ public class TemplateFileDisplayer {
 			public void mouseClicked(MouseEvent e) {
 				
 				jFrame.setVisible(false);
-				new TemplateFileCreatingDisplayer(true);
+				TemplateFileCreatingDisplayer templateFileCreatingDisplayer = new TemplateFileCreatingDisplayer(true);
+				if( !"-".equals(jComboBox.getSelectedItem().toString())) {
+				templateFileCreatingDisplayer.setData(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerName(),
+													  TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress(),
+													  TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName(), 
+													  TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerAddress(), 
+													  TemplateFileManager.TEMPLATE_FILE_DATA.getPlate().split("-")[0], 
+													  TemplateFileManager.TEMPLATE_FILE_DATA.getPlate().split("-")[1], 
+													  String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getDistance()), 
+													  String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getPricePerDistance()), 
+													  TemplateFileManager.TEMPLATE_FILE_DATA.getFileName()
+													  .substring(0, TemplateFileManager.TEMPLATE_FILE_DATA.getFileName().length() - 4));
+				}
 			}
 		});
 		
@@ -148,23 +161,21 @@ public class TemplateFileDisplayer {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-			
+				
 			if("-".equals(jComboBox.getSelectedItem().toString())) {	
-			jLabelForWorkerName.setText("");
-			jLabelForWorkerAddress.setText("");
-			jLabelForEmployerName.setText("");
-			jLabelForEmployerAddress.setText("");
-			jLabelForTravelDistance.setText("");
-			jLabelForTravelPrice.setText("");
+			displayData(" ", " ", " ", " ", " ", " ", " ");
+			addWorkDays.setEnabled(false);
 			}
 			else {
+				addWorkDays.setEnabled(true);
 				new TemplateFileManager().readTemplateFile(jComboBox.getSelectedItem().toString());
-				jLabelForWorkerName.setText(TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName());
-				jLabelForWorkerAddress.setText(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress());
-				jLabelForEmployerName.setText(TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName());
-				jLabelForEmployerAddress.setText(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress());
-				jLabelForTravelDistance.setText(String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getDistance()));
-				jLabelForTravelPrice.setText(String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getPricePerDistance()));
+				displayData(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerName(), 
+						TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress(), 
+						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName(), 
+						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerAddress(),
+						TemplateFileManager.TEMPLATE_FILE_DATA.getPlate(),
+						String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getDistance()),
+						String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getPricePerDistance()));
 			}
 		}
 	});
@@ -216,40 +227,48 @@ public class TemplateFileDisplayer {
 		jLabelForEmployerAddress.setForeground(textColor);
 		jPanelForEmployeeAddress.add(jLabelForEmployerAddress);
 		
-		JPanel jPanelForTravelCostData = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JPanel jPanelForPlateAndTravelCostData = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JLabel plate = new JLabel("Rendszám:");
 		JLabel travelDistance = new JLabel("Távolság:");
 		JLabel jLabelForDistanceUnit = new JLabel("km");
-		jPanelForTravelCostData.add(travelDistance);
-		jPanelForTravelCostData.add(Box.createHorizontalStrut(65));
+		jPanelForPlateAndTravelCostData.add(plate);
+		jLabelForPlate.setFont(font);
+		jLabelForPlate.setForeground(textColor);
+		jPanelForPlateAndTravelCostData.add(Box.createHorizontalStrut(55));
+		jPanelForPlateAndTravelCostData.add(jLabelForPlate);
+		jPanelForPlateAndTravelCostData.add(Box.createHorizontalStrut(60));
+		jPanelForPlateAndTravelCostData.add(travelDistance);
+		jPanelForPlateAndTravelCostData.add(Box.createHorizontalStrut(10));
 		jLabelForTravelDistance.setFont(font);
 		jLabelForTravelDistance.setForeground(textColor);
-		jPanelForTravelCostData.add(jLabelForTravelDistance);
-		jPanelForTravelCostData.add(Box.createHorizontalStrut(10));
-		jPanelForTravelCostData.add(jLabelForDistanceUnit);
-		jPanelForTravelCostData.add(Box.createHorizontalStrut(30));
+		jPanelForPlateAndTravelCostData.add(jLabelForTravelDistance);
+		jPanelForPlateAndTravelCostData.add(Box.createHorizontalStrut(10));
+		jPanelForPlateAndTravelCostData.add(jLabelForDistanceUnit);
+		jPanelForPlateAndTravelCostData.add(Box.createHorizontalStrut(60));
 		JLabel travelPrice = new JLabel("Elszámolási díj:");
-		jPanelForTravelCostData.add(travelPrice);
-		jPanelForTravelCostData.add(Box.createHorizontalStrut(30));
+		jPanelForPlateAndTravelCostData.add(travelPrice);
+		jPanelForPlateAndTravelCostData.add(Box.createHorizontalStrut(10));
 		jLabelForTravelPrice.setFont(font);
 		jLabelForTravelPrice.setForeground(textColor);
-		jPanelForTravelCostData.add(jLabelForTravelPrice);
-		jPanelForTravelCostData.add(Box.createHorizontalStrut(10));
+		jPanelForPlateAndTravelCostData.add(jLabelForTravelPrice);
+		jPanelForPlateAndTravelCostData.add(Box.createHorizontalStrut(10));
 		JLabel jLabelForPriceUnit = new JLabel("Ft/km");
-		jPanelForTravelCostData.add(jLabelForPriceUnit);
+		jPanelForPlateAndTravelCostData.add(jLabelForPriceUnit);
 		
 		jFrame.add(jPanelForWorkerName);
 		jFrame.add(jPanelForWorkerAddress);
 		jFrame.add(jPanelForEmployeeName);
 		jFrame.add(jPanelForEmployeeAddress);
-		jFrame.add(jPanelForTravelCostData);
+		jFrame.add(jPanelForPlateAndTravelCostData);
 	}
 
-	public void setData(String workerName, String workerAddress,
-			String employerName, String employerAddress, String distance, String price) {
+	public void displayData(String workerName, String workerAddress,
+			String employerName, String employerAddress, String plate, String distance, String price) {
 		jLabelForWorkerName.setText(workerName);
 		jLabelForWorkerAddress.setText(workerAddress);
 		jLabelForEmployerName.setText(employerName);
 		jLabelForEmployerAddress.setText(employerAddress);
+		jLabelForPlate.setText(plate);
 		jLabelForTravelDistance.setText(distance);
 		jLabelForTravelPrice.setText(price);
 	}

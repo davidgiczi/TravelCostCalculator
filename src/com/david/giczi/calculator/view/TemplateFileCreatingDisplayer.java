@@ -7,6 +7,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,6 +37,8 @@ public class TemplateFileCreatingDisplayer {
 	private JTextField jTextFieldForTravelDistance = new JTextField(10);
 	private JTextField jTextFieldForTravelPrice = new JTextField(10);
 	private JTextField jTextFieldForFileName = new JTextField(10);
+	private JTextField jTextFieldForPlateLetter = new JTextField(3);
+	private JTextField jTextFieldForPlateNumber = new JTextField(3);
 	private JButton jButtonForSaveData = new JButton("Mentés");
 	public Boolean isActiveDisplayer;
 	
@@ -68,6 +73,38 @@ private JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu createTemplate = new JMenu("Dolgozói adatok fájl választása");
 		createTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		createTemplate.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				jFrame.setVisible(false);
+				new TemplateFileDisplayer(new TemplateFileManager().getFileNames());
+			}
+		});
 		menuBar.add(createTemplate);
 		if( !isActiveDisplayer ) {
 			createTemplate.setEnabled(false);
@@ -127,22 +164,36 @@ private void addTemplateFileDataToFrame() {
 	JLabel jLabelForPriceUnit = new JLabel("Ft/km");
 	jPanelForTravelCostData.add(jLabelForPriceUnit);
 	
-	JPanel jPanelForFileName = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	JPanel jPanelForPlateNumberAndFileName = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	JLabel jLabelForPlate = new JLabel("Rendszám:");
 	JLabel jLabelForFileName = new JLabel("Mentési fájl neve:");
-	jPanelForFileName.add(jLabelForFileName);
-	jPanelForFileName.add(Box.createHorizontalStrut(20));
+	jPanelForPlateNumberAndFileName.add(jLabelForPlate);
+	jPanelForPlateNumberAndFileName.add(Box.createHorizontalStrut(59));
+	jTextFieldForPlateLetter.setFont(font);
+	jTextFieldForPlateLetter.setForeground(textColor);
+	jPanelForPlateNumberAndFileName.add(jTextFieldForPlateLetter);
+	JLabel jLabelForHyphen = new JLabel("-");
+	jLabelForHyphen.setFont(font);
+	jPanelForPlateNumberAndFileName.add(jLabelForHyphen);
+	jTextFieldForPlateNumber.setFont(font);
+	jTextFieldForPlateNumber.setForeground(textColor);
+	jPanelForPlateNumberAndFileName.add(jTextFieldForPlateNumber);
+	jPanelForPlateNumberAndFileName.add(Box.createHorizontalStrut(72));
+	
+	jPanelForPlateNumberAndFileName.add(jLabelForFileName);
+	jPanelForPlateNumberAndFileName.add(Box.createHorizontalStrut(20));
 	jTextFieldForFileName.setFont(font);
 	jTextFieldForFileName.setForeground(textColor);
-	jPanelForFileName.add(jTextFieldForFileName);
+	jPanelForPlateNumberAndFileName.add(jTextFieldForFileName);
 	JLabel jLabelForFile = new JLabel(".txt");
-	jPanelForFileName.add(jLabelForFile);
+	jPanelForPlateNumberAndFileName.add(jLabelForFile);
 	
 	jFrame.add(jPanelForWorkerName);
 	jFrame.add(jPanelForWorkerAddress);
 	jFrame.add(jPanelForEmployeeName);
 	jFrame.add(jPanelForEmployeeAddress);
 	jFrame.add(jPanelForTravelCostData);
-	jFrame.add(jPanelForFileName);
+	jFrame.add(jPanelForPlateNumberAndFileName);
 }
 	
 private void addSeparatorToFrame() {
@@ -172,7 +223,9 @@ private void addSaveButtonToFrame() {
 										jTextFieldForEmployerAddress.getText(), 
 										jTextFieldForTravelDistance.getText(),
 										jTextFieldForTravelPrice.getText(), 
-										jTextFieldForFileName.getText())) {
+										jTextFieldForFileName.getText(),
+										jTextFieldForPlateLetter.getText(),
+										jTextFieldForPlateNumber.getText())) {
 				
 				getWarningMessage("Minden adatbeviteli mezõ kitöltése szükséges.", "Hiányzó adat");
 				return;
@@ -183,6 +236,16 @@ private void addSaveButtonToFrame() {
 										jTextFieldForTravelPrice.getText())) {
 				
 				getWarningMessage("A \"Távolság\" és az \"Elszámolási díj\" mezõk értéke csak egész szám lehet.", "Hibás adat");
+				return;
+			}
+			
+			if( !templateFileCreatingDisplayerController.isValidPlateLetter(jTextFieldForPlateLetter.getText())) {
+				getWarningMessage("A rendszám betûmezõjének hossza 3 karakter és csak ékezet nélküli betû lehet.", "Hibás adat");
+				return;
+			}
+			
+			if( !templateFileCreatingDisplayerController.isValidPlateNumber(jTextFieldForPlateNumber.getText())) {
+				getWarningMessage("A rendszám számmezõjének hossza 3 karakter és csak számjegy lehet.", "Hibás adat");
 				return;
 			}
 				
@@ -197,7 +260,9 @@ private void addSaveButtonToFrame() {
 					jTextFieldForEmployerName.getText(), 
 					jTextFieldForEmployerAddress.getText(), 
 					jTextFieldForTravelDistance.getText(),
-					jTextFieldForTravelPrice.getText(), 
+					jTextFieldForTravelPrice.getText(),
+					jTextFieldForPlateLetter.getText(),
+					jTextFieldForPlateNumber.getText(),
 					jTextFieldForFileName.getText());
 				} else {
 				    return;
@@ -212,7 +277,9 @@ private void addSaveButtonToFrame() {
 				jTextFieldForEmployerName.getText(), 
 				jTextFieldForEmployerAddress.getText(), 
 				jTextFieldForTravelDistance.getText(),
-				jTextFieldForTravelPrice.getText(), 
+				jTextFieldForTravelPrice.getText(),
+				jTextFieldForPlateLetter.getText(),
+				jTextFieldForPlateNumber.getText(),
 				jTextFieldForFileName.getText());
 			}
 			getInfoMessage("\"" + jTextFieldForFileName.getText() + ".txt\" fájl mentve.", "Fájl mentése");
@@ -224,6 +291,20 @@ private void addSaveButtonToFrame() {
 	jPanelForSaveButton.add(jButtonForSaveData);
 	jFrame.add(jPanelForSaveButton);
 	
+}
+
+public void setData(String workerName, String workerAddress, String employerName, 
+		String employerAddress, String plateLetter, String plateNumber, 
+		String distance, String price, String fileName) {
+	jTextFieldForWorkerName.setText(workerName);
+	jTextFieldForWorkerAddress.setText(workerAddress);
+	jTextFieldForEmployerName.setText(employerName);
+	jTextFieldForEmployerAddress.setText(employerAddress);
+	jTextFieldForPlateLetter.setText(plateLetter);
+	jTextFieldForPlateNumber.setText(plateNumber);
+	jTextFieldForTravelDistance.setText(distance);
+	jTextFieldForTravelPrice.setText(price);
+	jTextFieldForFileName.setText(fileName);
 }
 
 public void getInfoMessage(String infoMessage, String titleMessage) {

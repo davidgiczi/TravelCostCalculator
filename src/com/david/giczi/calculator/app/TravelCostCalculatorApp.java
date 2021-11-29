@@ -18,6 +18,7 @@ public class TravelCostCalculatorApp {
 			templateFileCreatingDisplayer.getInfoMessage("Dolgozói adatok megadása szükséges." , "Adatkérés");
 			fileManager.createDataFolder();
 		}
+	
 		
 	}
 	

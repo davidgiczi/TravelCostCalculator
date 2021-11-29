@@ -8,6 +8,7 @@ public class TemplateFileData {
 	private String employerAddress;
 	private int distance;
 	private int pricePerDistance;
+	private String plate;
 	private String fileName;
 	
 	
@@ -47,17 +48,25 @@ public class TemplateFileData {
 	public void setPricePerDistance(int pricePerDistance) {
 		this.pricePerDistance = pricePerDistance;
 	}
+	
+	public String getPlate() {
+		return plate;
+	}
+	public void setPlate(String plate) {
+		this.plate = plate;
+	}
 	public String getFileName() {
 		return fileName;
 	}
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
+	
 	@Override
 	public String toString() {
 		return "TemplateFileData [workerName=" + workerName + ", workerAddress=" + workerAddress + ", employerName="
 				+ employerName + ", employerAddress=" + employerAddress + ", distance=" + distance
-				+ ", pricePerDistance=" + pricePerDistance + ", fileName=" + fileName + "]";
+				+ ", pricePerDistance=" + pricePerDistance + ", plate=" + plate + ", fileName=" + fileName + "]";
 	}
 	
 }

@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import com.david.giczi.calculator.controller.DaysOfMonthDisplayerController;
 import com.david.giczi.calculator.model.Day;
+import com.david.giczi.calculator.model.TemplateFileManager;
 
 public class DaysOfMonthDisplayer {
 
@@ -48,6 +49,38 @@ public class DaysOfMonthDisplayer {
 	private JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu chooseTemplate = new JMenu("Dolgozói adatok fájl választása");
+		chooseTemplate.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				jFrame.setVisible(false);
+				new TemplateFileDisplayer(new TemplateFileManager().getFileNames());
+			}
+		});
 		JMenu createPdfFile = new JMenu("Nyomtatvány fájl létrehozása");
 		chooseTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		createPdfFile.setCursor(new Cursor(Cursor.HAND_CURSOR));
