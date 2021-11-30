@@ -21,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import com.david.giczi.calculator.controller.TemplateFileCreatingDisplayerController;
+import com.david.giczi.calculator.model.InputDataValidator;
 import com.david.giczi.calculator.model.TemplateFileManager;
 
 
@@ -216,7 +217,7 @@ private void addSaveButtonToFrame() {
 			TemplateFileCreatingDisplayerController templateFileCreatingDisplayerController 
 			= new TemplateFileCreatingDisplayerController();
 			
-			if( !templateFileCreatingDisplayerController
+			if( !InputDataValidator
 					.isValidInputString(jTextFieldForWorkerName.getText(), 
 										jTextFieldForWorkerAddress.getText(),
 										jTextFieldForEmployerName.getText(), 
@@ -231,7 +232,7 @@ private void addSaveButtonToFrame() {
 				return;
 			}
 			
-			if( !templateFileCreatingDisplayerController
+			if( !InputDataValidator
 					.isValidInputNumber(jTextFieldForTravelDistance.getText(),
 										jTextFieldForTravelPrice.getText())) {
 				
@@ -239,12 +240,12 @@ private void addSaveButtonToFrame() {
 				return;
 			}
 			
-			if( !templateFileCreatingDisplayerController.isValidPlateLetter(jTextFieldForPlateLetter.getText())) {
+			if( !InputDataValidator.isValidPlateLetter(jTextFieldForPlateLetter.getText())) {
 				getWarningMessage("A rendszám betûmezõjének hossza 3 karakter és csak ékezet nélküli betû lehet.", "Hibás adat");
 				return;
 			}
 			
-			if( !templateFileCreatingDisplayerController.isValidPlateNumber(jTextFieldForPlateNumber.getText())) {
+			if( !InputDataValidator.isValidPlateNumber(jTextFieldForPlateNumber.getText())) {
 				getWarningMessage("A rendszám számmezõjének hossza 3 karakter és csak számjegy lehet.", "Hibás adat");
 				return;
 			}

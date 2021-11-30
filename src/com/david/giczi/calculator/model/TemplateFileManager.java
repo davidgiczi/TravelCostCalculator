@@ -104,8 +104,8 @@ public class TemplateFileManager {
 			TEMPLATE_FILE_DATA.setWorkerAddress(reader.readLine());
 			TEMPLATE_FILE_DATA.setEmployerName(reader.readLine());
 			TEMPLATE_FILE_DATA.setEmployerAddress(reader.readLine());
-			TEMPLATE_FILE_DATA.setDistance(Integer.parseInt(reader.readLine()));
-			TEMPLATE_FILE_DATA.setPricePerDistance(Integer.parseInt(reader.readLine()));
+		 	TEMPLATE_FILE_DATA.setDistance(reader.readLine());
+			TEMPLATE_FILE_DATA.setPricePerDistance(reader.readLine());
 			TEMPLATE_FILE_DATA.setFileName(fileName);
 			TEMPLATE_FILE_DATA.setPlate(reader.readLine());
 			

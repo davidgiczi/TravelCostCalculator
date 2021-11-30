@@ -6,8 +6,8 @@ public class TemplateFileData {
 	private String workerAddress;
 	private String employerName;
 	private String employerAddress;
-	private int distance;
-	private int pricePerDistance;
+	private String distance;
+	private String pricePerDistance;
 	private String plate;
 	private String fileName;
 	
@@ -36,19 +36,19 @@ public class TemplateFileData {
 	public void setEmployerAddress(String employerAddress) {
 		this.employerAddress = employerAddress;
 	}
-	public int getDistance() {
+	
+	public String getDistance() {
 		return distance;
 	}
-	public void setDistance(int distance) {
+	public void setDistance(String distance) {
 		this.distance = distance;
 	}
-	public int getPricePerDistance() {
+	public String getPricePerDistance() {
 		return pricePerDistance;
 	}
-	public void setPricePerDistance(int pricePerDistance) {
+	public void setPricePerDistance(String pricePerDistance) {
 		this.pricePerDistance = pricePerDistance;
 	}
-	
 	public String getPlate() {
 		return plate;
 	}

@@ -16,9 +16,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import com.david.giczi.calculator.controller.DaysOfMonthDisplayerController;
+import com.david.giczi.calculator.model.InputDataValidator;
 import com.david.giczi.calculator.model.TemplateFileManager;
 
 
@@ -167,8 +169,28 @@ public class TemplateFileDisplayer {
 			addWorkDays.setEnabled(false);
 			}
 			else {
-				addWorkDays.setEnabled(true);
+				
 				new TemplateFileManager().readTemplateFile(jComboBox.getSelectedItem().toString());
+				
+				if( !InputDataValidator.isValidInputFile(
+						TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerName(), 
+						TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress(), 
+						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName(), 
+						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerAddress(),
+						String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getDistance()),
+						String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getPricePerDistance()),
+						TemplateFileManager.TEMPLATE_FILE_DATA.getFileName(),
+						TemplateFileManager.TEMPLATE_FILE_DATA.getPlate())) {
+					
+					getWarningMessage("\"" + jComboBox.getSelectedItem().toString() + "\" fájl nem olvasható.", "Hibás tartalmú fájl");
+					jComboBox.setSelectedIndex(0);
+					return;
+				}
+				
+				addWorkDays.setEnabled(true);
+				
+				new TemplateFileManager().readTemplateFile(jComboBox.getSelectedItem().toString());
+				
 				displayData(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerName(), 
 						TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress(), 
 						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName(), 
@@ -271,6 +293,10 @@ public class TemplateFileDisplayer {
 		jLabelForPlate.setText(plate);
 		jLabelForTravelDistance.setText(distance);
 		jLabelForTravelPrice.setText(price);
+	}
+	
+	public void getWarningMessage(String warningMessage, String titleMessage) {
+		JOptionPane.showMessageDialog(null, warningMessage, titleMessage, JOptionPane.WARNING_MESSAGE);
 	}
 	
 }
