@@ -182,7 +182,7 @@ public class TemplateFileDisplayer {
 						TemplateFileManager.TEMPLATE_FILE_DATA.getFileName(),
 						TemplateFileManager.TEMPLATE_FILE_DATA.getPlate())) {
 					
-					getWarningMessage("\"" + jComboBox.getSelectedItem().toString() + "\" fájl nem olvasható.", "Hibás tartalmú fájl");
+					getWarningMessage("\"" + jComboBox.getSelectedItem().toString() + "\" fájl nem beolvasható.", "Hibás tartalmú fájl");
 					jComboBox.setSelectedIndex(0);
 					return;
 				}

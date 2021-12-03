@@ -236,7 +236,7 @@ private void addSaveButtonToFrame() {
 					.isValidInputNumber(jTextFieldForTravelDistance.getText(),
 										jTextFieldForTravelPrice.getText())) {
 				
-				getWarningMessage("A \"Távolság\" és az \"Elszámolási díj\" mezõk értéke csak egész szám lehet.", "Hibás adat");
+				getWarningMessage("A \"Távolság\" és az \"Elszámolási díj\" mezõk értéke csak pozitív egész szám lehet.", "Hibás adat");
 				return;
 			}
 			
@@ -246,7 +246,7 @@ private void addSaveButtonToFrame() {
 			}
 			
 			if( !InputDataValidator.isValidPlateNumber(jTextFieldForPlateNumber.getText())) {
-				getWarningMessage("A rendszám számmezõjének hossza 3 karakter és csak számjegy lehet.", "Hibás adat");
+				getWarningMessage("A rendszám számmezõjének hossza 3 karakter és csak pozitív számjegy lehet.", "Hibás adat");
 				return;
 			}
 				

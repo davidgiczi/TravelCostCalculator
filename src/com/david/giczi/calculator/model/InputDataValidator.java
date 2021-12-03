@@ -34,11 +34,17 @@ public class InputDataValidator {
 	public static Boolean isValidInputNumber(String distance, String price) {
 		
 		try {
-			Integer.parseInt(distance);
-			Integer.parseInt(price);
+			int parseDistance = Integer.parseInt(distance);
+			int parsePrice = Integer.parseInt(price);
+			
+			if(0 >= parseDistance || 0 >= parsePrice) {
+				return false;
+			}
+			
 		} catch (NumberFormatException e) {
 			return false;
 		}
+		
 		
 		return true;
 	}
@@ -70,8 +76,11 @@ public class InputDataValidator {
 	public static Boolean isValidPlateNumber(String plateNumber) {
 		
 		try {
-			Integer.parseInt(plateNumber);
+		int parsePlateNumber = Integer.parseInt(plateNumber);
 			if(plateNumber.length() != 3) {
+				return false;
+			}
+			if(0 > parsePlateNumber) {
 				return false;
 			}
 			
