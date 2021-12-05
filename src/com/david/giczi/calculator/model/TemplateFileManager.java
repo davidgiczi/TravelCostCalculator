@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TemplateFileManager {
 	
@@ -14,6 +16,8 @@ public class TemplateFileManager {
 	private File dataFolder = new File(FILE_PATH);
 	private File templateFile;
 	public static TemplateFileData TEMPLATE_FILE_DATA;
+	public static List<Day> SAVED_MONTH;
+	public static String SAVED_YEAR_MONTH;
 
 	public Boolean isDataFolderExist() {
 		
@@ -66,7 +70,7 @@ public class TemplateFileManager {
 	}
 	
 	
-	public void saveInputData(TemplateFileData data) {
+	public void saveInputData(TemplateFileData data, List<Day> actualMonth, String yearDotMonth) {
 		
 		
 		try(BufferedWriter writer = new BufferedWriter(
@@ -85,7 +89,14 @@ public class TemplateFileManager {
 				writer.write(String.valueOf(data.getPricePerDistance()));
 				writer.newLine();
 				writer.write(data.getPlate());
-			
+				writer.newLine();
+				writer.write(yearDotMonth);
+				writer.newLine();
+				for (Day day : actualMonth) {
+					writer.write(day.getNumberOfMonth() + ";" + day.isWorkDay());
+					writer.newLine();
+				}
+				
 		} catch (IOException e) {
 			System.out.println( "\'"+ templateFile.getName() + "\' file cannot be created.");
 			e.printStackTrace();
@@ -96,6 +107,7 @@ public class TemplateFileManager {
 	public void readTemplateFile(String fileName) {
 		
 		TEMPLATE_FILE_DATA = new TemplateFileData();
+		SAVED_MONTH = new ArrayList<>();
 		templateFile = new File(FILE_PATH + "/" + fileName);
 		
 		try(BufferedReader reader = new BufferedReader(new FileReader(templateFile))) {
@@ -108,6 +120,8 @@ public class TemplateFileManager {
 			TEMPLATE_FILE_DATA.setPricePerDistance(reader.readLine());
 			TEMPLATE_FILE_DATA.setFileName(fileName);
 			TEMPLATE_FILE_DATA.setPlate(reader.readLine());
+			SAVED_YEAR_MONTH = reader.readLine();
+			SAVED_MONTH = readSavedMonthFromFile(reader);
 			
 		} catch (IOException e) {
 			System.out.println("\'" + templateFile.getName() + "\' file cannot be created.");
@@ -116,4 +130,24 @@ public class TemplateFileManager {
 		
 	}
 	
+	private List<Day> readSavedMonthFromFile(BufferedReader reader){
+		
+		List<Day> savedMonth = new ArrayList<>();
+		
+		try {
+	
+			for(int i = 0; i < 42; i++) {
+
+				String[] rowComponents = reader.readLine().split(";");
+				savedMonth.add(new Day(Integer.parseInt(rowComponents[0]), 
+								Boolean.parseBoolean(rowComponents[1])));
+			}
+			
+		} catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return savedMonth;
+	}
 }

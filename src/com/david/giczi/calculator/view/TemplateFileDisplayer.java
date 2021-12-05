@@ -189,8 +189,6 @@ public class TemplateFileDisplayer {
 				
 				addWorkDays.setEnabled(true);
 				
-				new TemplateFileManager().readTemplateFile(jComboBox.getSelectedItem().toString());
-				
 				displayData(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerName(), 
 						TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress(), 
 						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName(), 

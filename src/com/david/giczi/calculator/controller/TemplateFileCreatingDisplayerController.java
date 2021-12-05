@@ -1,22 +1,28 @@
 package com.david.giczi.calculator.controller;
 
+import java.util.List;
+
+import com.david.giczi.calculator.model.Day;
+import com.david.giczi.calculator.model.MonthManager;
 import com.david.giczi.calculator.model.TemplateFileData;
 import com.david.giczi.calculator.model.TemplateFileManager;
 
 public class TemplateFileCreatingDisplayerController {
 
 	private TemplateFileManager templateFileManager;
+	private MonthManager monthManager;
 
 	public TemplateFileCreatingDisplayerController() {
 		
 		templateFileManager = new TemplateFileManager();
+		monthManager = new MonthManager();
 	}
 	
 	public Boolean isTemplateFileExist(String fileName) {
 		return templateFileManager.isTemplateFileExist(fileName);
 	}
 	
-	public void saveInputData(String workerName, String workerAddress, 
+	public void saveData(String workerName, String workerAddress, 
 			String employerName, String employerAddress, String distance, 
 				String price, String plateLetter, String plateNumber, String fileName) {
 		
@@ -29,7 +35,9 @@ public class TemplateFileCreatingDisplayerController {
 		templateFileData.setPricePerDistance(price);
 		templateFileData.setFileName(fileName);
 		templateFileData.setPlate(plateLetter.toUpperCase() + "-" + plateNumber);
-		templateFileManager.saveInputData(templateFileData);
+		List<Day> actualMonth = monthManager.createMonth(MonthManager.ACTUAL_YEAR, MonthManager.ACTUAL_MONTH);
+		templateFileManager.saveInputData(templateFileData, actualMonth,
+				MonthManager.ACTUAL_YEAR + ". " + new MonthManager().getMonthName(MonthManager.ACTUAL_MONTH));
 	}
 	
 }

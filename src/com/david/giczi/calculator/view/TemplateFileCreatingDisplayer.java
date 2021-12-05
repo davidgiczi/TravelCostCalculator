@@ -256,7 +256,7 @@ private void addSaveButtonToFrame() {
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				    
 					templateFileCreatingDisplayerController
-					.saveInputData(jTextFieldForWorkerName.getText(), 
+					.saveData(jTextFieldForWorkerName.getText(), 
 					jTextFieldForWorkerAddress.getText(),
 					jTextFieldForEmployerName.getText(), 
 					jTextFieldForEmployerAddress.getText(), 
@@ -273,7 +273,7 @@ private void addSaveButtonToFrame() {
 			else {
 				
 				templateFileCreatingDisplayerController
-				.saveInputData(jTextFieldForWorkerName.getText(), 
+				.saveData(jTextFieldForWorkerName.getText(), 
 				jTextFieldForWorkerAddress.getText(),
 				jTextFieldForEmployerName.getText(), 
 				jTextFieldForEmployerAddress.getText(), 

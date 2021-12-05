@@ -7,7 +7,7 @@ import java.util.List;
 
 public class MonthManager {
 
-	public static String[] PUBLIC_HOLIDAYS = {"0-1", "2-15", "4-1", "7-20", "9-23", "10-1", "11-25", "11-26"};
+	private static String[] PUBLIC_HOLIDAYS = {"0-1", "2-15", "4-1", "7-20", "9-23", "10-1", "11-25", "11-26"};
 	public static int ACTUAL_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 	public static int ACTUAL_MONTH = Calendar.getInstance().get(Calendar.MONTH);
 
