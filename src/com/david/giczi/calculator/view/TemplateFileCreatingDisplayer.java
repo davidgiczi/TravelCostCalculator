@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,7 +40,7 @@ public class TemplateFileCreatingDisplayer {
 	private JTextField jTextFieldForPlateLetter = new JTextField(3);
 	private JTextField jTextFieldForPlateNumber = new JTextField(3);
 	private JButton jButtonForSaveData = new JButton("Mentés");
-	public Boolean isActiveDisplayer;
+	private Boolean isActiveDisplayer;
 	
 	public void setIsActiveDisplayer(Boolean isActiveDisplayer) {
 		this.isActiveDisplayer = isActiveDisplayer;

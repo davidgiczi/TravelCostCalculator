@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import com.david.giczi.calculator.controller.DaysOfMonthDisplayerController;
@@ -26,12 +27,17 @@ public class DaysOfMonthDisplayer {
 	private JFrame jFrame;
 	private Font font;
 	private JButton[] jButtonStoreForDays;
-	private Color BLUE = new Color(212, 235, 242);
-	private Color YELLOW = new Color(255, 255, 212);
+	private JLabel yearDotMonthLabel;
+	public static Color BLUE = new Color(212, 235, 242);
+	public static Color YELLOW = new Color(255, 255, 212);
 	
 	public DaysOfMonthDisplayer() {
 		
 		jFrame = new JFrame("Munkanapok megadása");
+	}
+	
+	public void setTitle(String fileName) {
+		jFrame.setTitle("Munkanapok megadása - " + fileName);
 	}
 	
 	public void getDisplayer() {
@@ -134,6 +140,13 @@ public class DaysOfMonthDisplayer {
 						
 						@Override
 						public void actionPerformed(ActionEvent e) {
+				
+						DaysOfMonthDisplayerController daysOfMonthDisplayerController = 
+								new DaysOfMonthDisplayerController();
+						
+						String displayedYearDotMonth = yearDotMonthLabel.getText();
+						
+						if(daysOfMonthDisplayerController.isEqualDisplayedMonthAndSavedMonth(displayedYearDotMonth)) {	
 							
 							if(dayButton.getBackground().equals(BLUE)) {
 								dayButton.setBackground(YELLOW);
@@ -141,6 +154,30 @@ public class DaysOfMonthDisplayer {
 							else {
 								dayButton.setBackground(BLUE);
 							}
+						
+							daysOfMonthDisplayerController
+							.saveDisplayer(jButtonStoreForDays, displayedYearDotMonth);
+							
+							
+						}else {
+							
+							if (JOptionPane.showConfirmDialog(null,  "Felülírod a mentett hónap "
+									+ "(" + daysOfMonthDisplayerController.getSavedYearAndMonthAsText() +  ") adatait?", "Létezõ fájl",
+							        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+								
+								if(dayButton.getBackground().equals(BLUE)) {
+									dayButton.setBackground(YELLOW);
+								}
+								else {
+									dayButton.setBackground(BLUE);
+								}
+							
+								daysOfMonthDisplayerController
+								.saveDisplayer(jButtonStoreForDays, yearDotMonthLabel.getText());
+								
+							}
+							
+						}
 							
 						}
 					});
@@ -234,7 +271,7 @@ public class DaysOfMonthDisplayer {
 				
 			}
 		});
-		JLabel yearDotMonthLabel= new JLabel(yearDotMonth);
+		yearDotMonthLabel= new JLabel(yearDotMonth);
 		yearDotMonthLabel.setFont(font);
 		yearDotMonthLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lastRowPanel.add(prevMonth, BorderLayout.WEST);
@@ -243,4 +280,7 @@ public class DaysOfMonthDisplayer {
 		jFrame.add(lastRowPanel);
 	}
 	
+	public void getInfoMessage(String infoMessage, String titleMessage) {
+		JOptionPane.showMessageDialog(null, infoMessage, titleMessage, JOptionPane.INFORMATION_MESSAGE);
+	}
 }

@@ -97,17 +97,20 @@ public class TemplateFileDisplayer {
 				
 				jFrame.setVisible(false);
 				TemplateFileCreatingDisplayer templateFileCreatingDisplayer = new TemplateFileCreatingDisplayer(true);
-				if( !"-".equals(jComboBox.getSelectedItem().toString())) {
-				templateFileCreatingDisplayer.setData(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerName(),
-													  TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress(),
-													  TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName(), 
-													  TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerAddress(), 
-													  TemplateFileManager.TEMPLATE_FILE_DATA.getPlate().split("-")[0], 
-													  TemplateFileManager.TEMPLATE_FILE_DATA.getPlate().split("-")[1], 
-													  String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getDistance()), 
-													  String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getPricePerDistance()), 
-													  TemplateFileManager.TEMPLATE_FILE_DATA.getFileName()
-													  .substring(0, TemplateFileManager.TEMPLATE_FILE_DATA.getFileName().length() - 4));
+				TemplateFileManager templateFileManager = new TemplateFileManager();
+				String chosenTemplateFileName = jComboBox.getSelectedItem().toString();
+				if( !"-".equals(chosenTemplateFileName)) {
+				templateFileManager.readTemplateFile(chosenTemplateFileName);
+				templateFileCreatingDisplayer.setData(templateFileManager.getTemplateFileData().getWorkerName(),
+													  templateFileManager.getTemplateFileData().getWorkerAddress(),
+													  templateFileManager.getTemplateFileData().getEmployerName(), 
+													  templateFileManager.getTemplateFileData().getEmployerAddress(), 
+													  templateFileManager.getTemplateFileData().getPlate().split("-")[0], 
+													  templateFileManager.getTemplateFileData().getPlate().split("-")[1], 
+													  String.valueOf(templateFileManager.getTemplateFileData().getDistance()), 
+													  String.valueOf(templateFileManager.getTemplateFileData().getPricePerDistance()), 
+													  templateFileManager.getTemplateFileData().getFileName()
+													  .substring(0, chosenTemplateFileName.length() - 4));
 				}
 			}
 		});
@@ -170,32 +173,33 @@ public class TemplateFileDisplayer {
 			}
 			else {
 				
-				new TemplateFileManager().readTemplateFile(jComboBox.getSelectedItem().toString());
-				
+			String chosenTemplateFileName = jComboBox.getSelectedItem().toString();
+			TemplateFileManager templateFileManager = new TemplateFileManager();
+			templateFileManager.readTemplateFile(chosenTemplateFileName);
 				if( !InputDataValidator.isValidInputFile(
-						TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerName(), 
-						TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress(), 
-						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName(), 
-						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerAddress(),
-						String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getDistance()),
-						String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getPricePerDistance()),
-						TemplateFileManager.TEMPLATE_FILE_DATA.getFileName(),
-						TemplateFileManager.TEMPLATE_FILE_DATA.getPlate())) {
+						templateFileManager.getTemplateFileData().getWorkerName(), 
+						templateFileManager.getTemplateFileData().getWorkerAddress(), 
+						templateFileManager.getTemplateFileData().getEmployerName(), 
+						templateFileManager.getTemplateFileData().getEmployerAddress(),
+						String.valueOf(templateFileManager.getTemplateFileData().getDistance()),
+						String.valueOf(templateFileManager.getTemplateFileData().getPricePerDistance()),
+						templateFileManager.getTemplateFileData().getFileName(),
+						templateFileManager.getTemplateFileData().getPlate())) {
 					
-					getWarningMessage("\"" + jComboBox.getSelectedItem().toString() + "\" fájl nem beolvasható.", "Hibás tartalmú fájl");
+					getWarningMessage("\"" + chosenTemplateFileName + "\" fájl nem beolvasható.", "Hibás tartalmú fájl");
 					jComboBox.setSelectedIndex(0);
 					return;
 				}
 				
 				addWorkDays.setEnabled(true);
 				
-				displayData(TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerName(), 
-						TemplateFileManager.TEMPLATE_FILE_DATA.getWorkerAddress(), 
-						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerName(), 
-						TemplateFileManager.TEMPLATE_FILE_DATA.getEmployerAddress(),
-						TemplateFileManager.TEMPLATE_FILE_DATA.getPlate(),
-						String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getDistance()),
-						String.valueOf(TemplateFileManager.TEMPLATE_FILE_DATA.getPricePerDistance()));
+				displayData(templateFileManager.getTemplateFileData().getWorkerName(), 
+						templateFileManager.getTemplateFileData().getWorkerAddress(), 
+						templateFileManager.getTemplateFileData().getEmployerName(), 
+						templateFileManager.getTemplateFileData().getEmployerAddress(),
+						templateFileManager.getTemplateFileData().getPlate(),
+						String.valueOf(templateFileManager.getTemplateFileData().getDistance()),
+						String.valueOf(templateFileManager.getTemplateFileData().getPricePerDistance()));
 			}
 		}
 	});

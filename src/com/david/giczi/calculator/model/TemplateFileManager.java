@@ -10,14 +10,31 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+
+import com.david.giczi.calculator.view.DaysOfMonthDisplayer;
+
 public class TemplateFileManager {
 	
-	private String FILE_PATH = "./TravelCostCalculatorData";
+	private final String FILE_PATH = "./TravelCostCalculatorData";
 	private File dataFolder = new File(FILE_PATH);
 	private File templateFile;
-	public static TemplateFileData TEMPLATE_FILE_DATA;
-	public static List<Day> SAVED_MONTH;
-	public static String SAVED_YEAR_MONTH;
+	private List<Day> savedMonth;
+	private String savedYearMonth;
+	private TemplateFileData templateFileData;
+	public static String ACTUAL_TEMPLATE_FILE_NAME;
+	
+	public List<Day> getSavedMonth() {
+		return savedMonth;
+	}
+
+	public String getSavedYearMonth() {
+		return savedYearMonth;
+	}
+	
+	public TemplateFileData getTemplateFileData() {
+		return templateFileData;
+	}
 
 	public Boolean isDataFolderExist() {
 		
@@ -28,6 +45,7 @@ public class TemplateFileManager {
 		
 		return true;
 	}
+	
 	
 	public void createDataFolder() {
 		dataFolder.mkdir();
@@ -70,7 +88,7 @@ public class TemplateFileManager {
 	}
 	
 	
-	public void saveInputData(TemplateFileData data, List<Day> actualMonth, String yearDotMonth) {
+	public void saveTemplateFile(TemplateFileData data, List<Day> actualMonth, String yearDotMonth) {
 		
 		
 		try(BufferedWriter writer = new BufferedWriter(
@@ -106,22 +124,23 @@ public class TemplateFileManager {
 	
 	public void readTemplateFile(String fileName) {
 		
-		TEMPLATE_FILE_DATA = new TemplateFileData();
-		SAVED_MONTH = new ArrayList<>();
+		ACTUAL_TEMPLATE_FILE_NAME = fileName;
+		templateFileData = new TemplateFileData();
+		savedMonth = new ArrayList<>();
 		templateFile = new File(FILE_PATH + "/" + fileName);
 		
 		try(BufferedReader reader = new BufferedReader(new FileReader(templateFile))) {
 			
-			TEMPLATE_FILE_DATA.setWorkerName(reader.readLine());
-			TEMPLATE_FILE_DATA.setWorkerAddress(reader.readLine());
-			TEMPLATE_FILE_DATA.setEmployerName(reader.readLine());
-			TEMPLATE_FILE_DATA.setEmployerAddress(reader.readLine());
-		 	TEMPLATE_FILE_DATA.setDistance(reader.readLine());
-			TEMPLATE_FILE_DATA.setPricePerDistance(reader.readLine());
-			TEMPLATE_FILE_DATA.setFileName(fileName);
-			TEMPLATE_FILE_DATA.setPlate(reader.readLine());
-			SAVED_YEAR_MONTH = reader.readLine();
-			SAVED_MONTH = readSavedMonthFromFile(reader);
+			templateFileData.setWorkerName(reader.readLine());
+			templateFileData.setWorkerAddress(reader.readLine());
+			templateFileData.setEmployerName(reader.readLine());
+			templateFileData.setEmployerAddress(reader.readLine());
+		 	templateFileData.setDistance(reader.readLine());
+			templateFileData.setPricePerDistance(reader.readLine());
+			templateFileData.setFileName(fileName);
+			templateFileData.setPlate(reader.readLine());
+			savedYearMonth = reader.readLine();
+			savedMonth = readSavedMonthFromTemplateFile(reader);
 			
 		} catch (IOException e) {
 			System.out.println("\'" + templateFile.getName() + "\' file cannot be created.");
@@ -130,7 +149,7 @@ public class TemplateFileManager {
 		
 	}
 	
-	private List<Day> readSavedMonthFromFile(BufferedReader reader){
+	private List<Day> readSavedMonthFromTemplateFile(BufferedReader reader){
 		
 		List<Day> savedMonth = new ArrayList<>();
 		
@@ -149,5 +168,35 @@ public class TemplateFileManager {
 		}
 		
 		return savedMonth;
+	}
+	
+	public void saveDaysOfMonthDisplayer(JButton[] dayStore, String yearDotMonth) {
+		
+		readTemplateFile(ACTUAL_TEMPLATE_FILE_NAME);
+		saveTemplateFile(templateFileData, 
+				createActualMonthByDaysOfMonthDisplayer(dayStore), yearDotMonth);
+	}
+	
+	private List<Day> createActualMonthByDaysOfMonthDisplayer(JButton[] dayButtonStore){
+		
+		List<Day> daysOfMonth = new ArrayList<>();
+
+		for (JButton dayButton : dayButtonStore) {
+			
+			if( !dayButton.isEnabled() && dayButton.getBackground().equals(DaysOfMonthDisplayer.BLUE)) {
+				daysOfMonth.add(new Day(-1, true));
+			}
+			else if( !dayButton.isEnabled() && dayButton.getBackground().equals(DaysOfMonthDisplayer.YELLOW)) {
+				daysOfMonth.add(new Day(-1, false));
+			}
+			else if(dayButton.isEnabled() && dayButton.getBackground().equals(DaysOfMonthDisplayer.BLUE)) {
+				daysOfMonth.add(new Day(Integer.parseInt(dayButton.getText()), true));
+			}
+			else if(dayButton.isEnabled() && dayButton.getBackground().equals(DaysOfMonthDisplayer.YELLOW)) {
+				daysOfMonth.add(new Day(Integer.parseInt(dayButton.getText()), false));
+			}
+		}
+		
+		return daysOfMonth;
 	}
 }

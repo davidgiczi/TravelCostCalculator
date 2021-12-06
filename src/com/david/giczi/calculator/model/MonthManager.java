@@ -185,6 +185,10 @@ public class MonthManager {
 		return decreasedValues;
 	}
 	
+	public String getActualYearAndMonthAsText() {
+		return ACTUAL_YEAR + ". " + getMonthName(ACTUAL_MONTH);
+	}
+	
 	public List<Day> createMonth(int yearValue, int monthValue){
 		
 	List<Day> month = new ArrayList<>();
