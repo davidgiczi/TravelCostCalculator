@@ -13,8 +13,7 @@ public class DaysOfMonthDisplayerController {
 	private MonthManager monthManager;
 	private DaysOfMonthDisplayer daysOfMonthDisplayer;
 	private TemplateFileManager templateFileManager;
-	
-	
+
 	
 	public DaysOfMonthDisplayerController(){
 		monthManager = new MonthManager();
@@ -26,7 +25,7 @@ public class DaysOfMonthDisplayerController {
 		
 		List<Day> actualMonthDays;
 		
-		if(isEqualDisplayedMonthAndSavedMonth(monthManager.getActualYearAndMonthAsText())) {
+		if(isEqualActualMonthAndSavedMonthText(monthManager.getActualYearAndMonthAsText())) {
 			
 			templateFileManager.readTemplateFile(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 			actualMonthDays = new ArrayList<>(templateFileManager.getSavedMonth());
@@ -50,7 +49,7 @@ public class DaysOfMonthDisplayerController {
 		int nextYear = nextYearMonthComponents[1];
 		List<Day> nextMonthDays;
 		
-		if(isEqualDisplayedMonthAndSavedMonth(nextYear + ". " + new MonthManager().getMonthName(nextMonth))) {
+		if(isEqualActualMonthAndSavedMonthText(nextYear + ". " + new MonthManager().getMonthName(nextMonth))) {
 			
 			templateFileManager.readTemplateFile(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 			nextMonthDays = new ArrayList<>(templateFileManager.getSavedMonth());
@@ -74,7 +73,7 @@ public class DaysOfMonthDisplayerController {
 		int previousYear = previousYearMonthComponents[1];
 		List<Day> previousMonthDays;
 		
-		if(isEqualDisplayedMonthAndSavedMonth(previousYear + ". " + new MonthManager().getMonthName(previousMonth))) {
+		if(isEqualActualMonthAndSavedMonthText(previousYear + ". " + new MonthManager().getMonthName(previousMonth))) {
 			
 			templateFileManager.readTemplateFile(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 			previousMonthDays = new ArrayList<>(templateFileManager.getSavedMonth());
@@ -98,7 +97,7 @@ public class DaysOfMonthDisplayerController {
 		return templateFileManager.getSavedYearMonth();
 	}
 	
-	public Boolean isEqualDisplayedMonthAndSavedMonth(String displayedYearDotMonth) {
+	public Boolean isEqualActualMonthAndSavedMonthText(String displayedYearDotMonth) {
 		
 		templateFileManager.readTemplateFile(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 			

@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import com.david.giczi.calculator.controller.DaysOfMonthDisplayerController;
 import com.david.giczi.calculator.model.Day;
+import com.david.giczi.calculator.model.PdfManager;
 import com.david.giczi.calculator.model.TemplateFileManager;
 
 public class DaysOfMonthDisplayer {
@@ -88,6 +89,56 @@ public class DaysOfMonthDisplayer {
 			}
 		});
 		JMenu createPdfFile = new JMenu("Nyomtatvány fájl létrehozása");
+		createPdfFile.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+			PdfManager pdfManager =	new PdfManager();
+			
+			String yearDotMonth = yearDotMonthLabel.getText();
+			
+			if(!pdfManager.isPDFileExist(yearDotMonth)) {
+					pdfManager.createAndOpenPDFile(yearDotMonth);
+					getInfoMessage("\"" + pdfManager.createPDFileName(yearDotMonth) + "\" fájl mentve." , "Fájl mentése");
+			}
+			else {
+				
+				if (JOptionPane.showConfirmDialog(null, "Felülírod?\n\"" +  pdfManager.createPDFileName(yearDotMonth) + "\"", "Létezõ fájl",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					pdfManager.createAndOpenPDFile(yearDotMonth);
+					getInfoMessage("\"" + pdfManager.createPDFileName(yearDotMonth) + "\" fájl mentve." , "Fájl mentése");
+				}
+				
+			}
+				
+			}
+		});
+		
 		chooseTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		createPdfFile.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menuBar.add(chooseTemplate);
@@ -146,7 +197,7 @@ public class DaysOfMonthDisplayer {
 						
 						String displayedYearDotMonth = yearDotMonthLabel.getText();
 						
-						if(daysOfMonthDisplayerController.isEqualDisplayedMonthAndSavedMonth(displayedYearDotMonth)) {	
+						if(daysOfMonthDisplayerController.isEqualActualMonthAndSavedMonthText(displayedYearDotMonth)) {	
 							
 							if(dayButton.getBackground().equals(BLUE)) {
 								dayButton.setBackground(YELLOW);
@@ -283,4 +334,5 @@ public class DaysOfMonthDisplayer {
 	public void getInfoMessage(String infoMessage, String titleMessage) {
 		JOptionPane.showMessageDialog(null, infoMessage, titleMessage, JOptionPane.INFORMATION_MESSAGE);
 	}
+	
 }

@@ -251,7 +251,7 @@ private void addSaveButtonToFrame() {
 				
 			if(templateFileCreatingDisplayerController.isTemplateFileExist(jTextFieldForFileName.getText())) {
 				
-				if (JOptionPane.showConfirmDialog(null,  "Felülírod?", "Létezõ fájl: " + jTextFieldForFileName.getText() + ".txt",
+				if (JOptionPane.showConfirmDialog(null,  "Felülírod?\n" + jTextFieldForFileName.getText() + ".txt", "Létezõ fájl",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 				    
 					templateFileCreatingDisplayerController
