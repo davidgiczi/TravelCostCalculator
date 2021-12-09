@@ -124,14 +124,16 @@ public class DaysOfMonthDisplayer {
 			
 			if(!pdfManager.isPDFileExist(yearDotMonth)) {
 					pdfManager.createAndOpenPDFile(yearDotMonth);
-					getInfoMessage("\"" + pdfManager.createPDFileName(yearDotMonth) + "\" fájl mentve." , "Fájl mentése");
+					getInfoMessage("\"" + pdfManager.createPDFileName(yearDotMonth) + "\" fájl mentve:\n" 
+					+ pdfManager.pdfAbsolutePath, "Fájl mentése");
 			}
 			else {
 				
 				if (JOptionPane.showConfirmDialog(null, "Felülírod?\n\"" +  pdfManager.createPDFileName(yearDotMonth) + "\"", "Létezõ fájl",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					pdfManager.createAndOpenPDFile(yearDotMonth);
-					getInfoMessage("\"" + pdfManager.createPDFileName(yearDotMonth) + "\" fájl mentve." , "Fájl mentése");
+					getInfoMessage("\"" + pdfManager.createPDFileName(yearDotMonth) + "\" fájl mentve:\n"
+							+ pdfManager.pdfAbsolutePath, "Fájl mentése");
 				}
 				
 			}

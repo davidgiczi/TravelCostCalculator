@@ -177,7 +177,7 @@ public class TemplateFileManager {
 				createActualMonthByDaysOfMonthDisplayer(dayStore), yearDotMonth);
 	}
 	
-	private List<Day> createActualMonthByDaysOfMonthDisplayer(JButton[] dayButtonStore){
+	public List<Day> createActualMonthByDaysOfMonthDisplayer(JButton[] dayButtonStore){
 		
 		List<Day> daysOfMonth = new ArrayList<>();
 
