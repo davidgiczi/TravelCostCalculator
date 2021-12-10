@@ -119,7 +119,7 @@ public class DaysOfMonthDisplayer {
 			public void mouseClicked(MouseEvent e) {
 				
 			PdfManager pdfManager =	new PdfManager();
-			
+			pdfManager.setDaysButtonStore(jButtonStoreForDays);
 			String yearDotMonth = yearDotMonthLabel.getText();
 			
 			if(!pdfManager.isPDFileExist(yearDotMonth)) {
