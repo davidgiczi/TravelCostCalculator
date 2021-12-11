@@ -34,8 +34,8 @@ public class InputDataValidator {
 	public static Boolean isValidInputNumber(String distance, String price) {
 		
 		try {
-			float parseDistance = Float.parseFloat(distance);
-			float parsePrice = Float.parseFloat(price);
+			double parseDistance = Double.parseDouble(distance);
+			double parsePrice = Double.parseDouble(price);
 			
 			if(0 >= parseDistance || 0 >= parsePrice) {
 				return false;
