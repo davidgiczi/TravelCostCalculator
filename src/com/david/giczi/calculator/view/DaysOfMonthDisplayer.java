@@ -37,6 +37,14 @@ public class DaysOfMonthDisplayer {
 		jFrame = new JFrame("Munkanapok megadása");
 	}
 	
+	public JButton[] getjButtonStoreForDays() {
+		return jButtonStoreForDays;
+	}
+	
+	public String getActualYearDotMonthAsString() {
+		return yearDotMonthLabel.getText();
+	}
+
 	public void setTitle(String fileName) {
 		jFrame.setTitle("Munkanapok megadása - " + fileName);
 	}

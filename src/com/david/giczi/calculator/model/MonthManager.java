@@ -65,6 +65,55 @@ public class MonthManager {
 		return "Érvénytelen hónap";
 	}
 	
+	public String getDateOfDay(String yearDotMonth, Day day) {
+		
+		String[] yearDotMonthComponents = yearDotMonth.split("\\.");
+		String yearValue = yearDotMonthComponents[0];
+		String monthName = yearDotMonthComponents[1].trim();
+		String monthValue = null;
+		
+		switch (monthName) {
+		case "január":
+			monthValue = "01";
+			break;
+		case "február":
+			monthValue = "02";
+			break;
+		case "március":
+			monthValue = "03";
+			break;
+		case "április":
+			monthValue = "04";
+			break;
+		case "május":
+			monthValue = "05";
+			break;
+		case "június":
+			monthValue = "06";
+			break;
+		case "július":
+			monthValue = "07";
+			break;
+		case "augusztus":
+			monthValue = "08";
+			break;
+		case "szeptember":
+			monthValue = "09";
+			break;
+		case "október":
+			monthValue = "10";
+			break;
+		case "november":
+			monthValue = "11";
+			break;
+		case "december":
+			monthValue = "12";
+		}
+		
+		return yearValue + "." + monthValue + "." 
+		+ (day.getNumberOfMonth() < 10 ? "0" + day.getNumberOfMonth() : day.getNumberOfMonth());
+	}
+	
 	public Integer[] increaseMonth(String yearDotMonth) {
 		
 		String[] yearDotMonthComponents = yearDotMonth.split("\\.");
