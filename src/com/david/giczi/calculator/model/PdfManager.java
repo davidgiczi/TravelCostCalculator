@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.text.DecimalFormat;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.JButton;
-import com.david.giczi.calculator.view.DaysOfMonthDisplayer;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -21,6 +23,7 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
+
 public class PdfManager {
 
 	private TemplateFileManager templateFileManager;
@@ -32,7 +35,9 @@ public class PdfManager {
 	private Font smallFont;
 	private Font middleFont;
 	private Font middleBoldFont;
+	private Font titleTextFont;
 	private Font largeBoldFont;
+	private Double sumDistance;
 	
 	
 	public PdfManager()  {
@@ -45,7 +50,8 @@ public class PdfManager {
 			smallFont = new Font(baseFont, 6, Font.NORMAL);
 			middleFont = new Font(baseFont, 8, Font.NORMAL);
 			middleBoldFont = new Font(baseFont, 8, Font.BOLD);
-			largeBoldFont = new Font(baseFont, 16, Font.BOLD);
+			largeBoldFont = new Font(baseFont, 9, Font.BOLD);
+			titleTextFont = new Font(baseFont, 16, Font.BOLD);
 		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
 		}
@@ -68,10 +74,13 @@ public class PdfManager {
 			doc.open();
 		
 			addHeaderToPdf(doc, yearDotMonth);
+			addEmptyRow(doc);
 			addTitleToPdf(doc);
+			addEmptyRow(doc);
 			addTableToPdf(doc, yearDotMonth);
 			addFooterToPdf(doc);
-			//addLogoToPdf(doc);
+			addEmptyRow(doc);
+			addLogoToPdf(doc);
 			
 			Desktop.getDesktop().open(new File(PDF_FOLDER_PATH + createPDFileName(yearDotMonth)));
 			
@@ -162,7 +171,7 @@ public class PdfManager {
 		PdfPTable table = new PdfPTable(columnWidth);
 		table.getDefaultCell().setFixedHeight(15);
 		table.setWidthPercentage(100f);
-		PdfPCell roadRegisterTextCell = new PdfPCell(new Phrase("Útnyilvántartás", largeBoldFont));
+		PdfPCell roadRegisterTextCell = new PdfPCell(new Phrase("Útnyilvántartás", titleTextFont));
 		roadRegisterTextCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		roadRegisterTextCell.setBorder(Rectangle.NO_BORDER);
 		table.addCell(roadRegisterTextCell);
@@ -257,10 +266,14 @@ public class PdfManager {
 		
 		int itemCounter = 0;
 		
-		for (Day day : templateFileManager.createActualMonthByDaysOfMonthDisplayer(daysButtonStore)) {
-			if(day.getNumberOfMonth() != -1 && day.isWorkDay()) {
-				String date = new MonthManager().getDateOfDay(yearDotMonth, day);
-				PdfPCell oddNumberCell = new PdfPCell(new Phrase(++itemCounter + ".", middleFont));
+		List<Day> daysOfMonth = templateFileManager
+				.createActualMonthByDaysOfMonthDisplayer(daysButtonStore)
+				.stream().filter(d -> d.getNumberOfMonth() != -1 && d.isWorkDay()).collect(Collectors.toList());
+		
+		for (int i = 0; i < daysOfMonth.size(); i++) {
+		
+				String date = new MonthManager().getDateOfDay(yearDotMonth, daysOfMonth.get(i));
+				PdfPCell oddNumberCell = new PdfPCell(new Phrase( ++ itemCounter + ".", middleFont));
 				oddNumberCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 				table.addCell(oddNumberCell);
 				PdfPCell dateOfTravelToTargetCell = new PdfPCell(new Phrase(date, middleFont));
@@ -286,22 +299,34 @@ public class PdfManager {
 				table.addCell(startDistanceCell);
 				table.completeRow();
 				
-				PdfPCell evenNumberCell = new PdfPCell(new Phrase(++itemCounter + ".", middleFont));
+				PdfPCell evenNumberCell = new PdfPCell(new Phrase( ++ itemCounter + ".", middleFont));
 				evenNumberCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				if(i == daysOfMonth.size() - 1) {
+					evenNumberCell.setBorderWidthBottom(1.5f);
+				}
 				evenNumberCell.setGrayFill(0.9f);
 				table.addCell(evenNumberCell);
 				PdfPCell dateOfTravelToBackCell = new PdfPCell(new Phrase(date, middleFont));
 				dateOfTravelToBackCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				if(i == daysOfMonth.size() - 1) {
+					dateOfTravelToBackCell.setBorderWidthBottom(1.5f);
+				}
 				dateOfTravelToBackCell.setGrayFill(0.9f);
 				table.addCell(dateOfTravelToBackCell);
 				PdfPCell starterBackPlaceCell = new PdfPCell(new Phrase(templateFileManager
 						.getTemplateFileData().getEmployerAddress(), smallFont));
 				starterBackPlaceCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				if(i == daysOfMonth.size() - 1) {
+					starterBackPlaceCell.setBorderWidthBottom(1.5f);
+				}
 				starterBackPlaceCell.setGrayFill(0.9f);
 				table.addCell(starterBackPlaceCell);
 				PdfPCell targetBackPlaceCell = new PdfPCell(new Phrase(templateFileManager
 						.getTemplateFileData().getWorkerAddress(), smallFont));
 				targetBackPlaceCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+				if(i == daysOfMonth.size() - 1) {
+					targetBackPlaceCell.setBorderWidthBottom(1.5f);
+				}
 				targetBackPlaceCell.setGrayFill(0.9f);
 				table.addCell(targetBackPlaceCell);
 				PdfPCell partnerCell2 = new PdfPCell(new Phrase(null, middleFont));
@@ -315,7 +340,6 @@ public class PdfManager {
 				backDistanceCell.setGrayFill(0.9f);
 				table.addCell(backDistanceCell);
 				table.completeRow();
-			}
 		}
 		
 		addSummaRowToTable(doc, table);
@@ -338,20 +362,147 @@ public class PdfManager {
 		table.addCell(invisibleCell4);
 		PdfPCell sumDistanceTextCell = new PdfPCell(new Phrase("Összesen:", middleBoldFont));
 		sumDistanceTextCell.setHorizontalAlignment(Element.ALIGN_LEFT);
+		sumDistanceTextCell.setBorderWidthLeft(1.5f);
+		sumDistanceTextCell.setBorderWidthTop(1.5f);
 		sumDistanceTextCell.setBorderWidthBottom(1.5f);
 		table.addCell(sumDistanceTextCell);
 		PdfPCell emptyCell = new PdfPCell(new Phrase(null, middleFont));
+		emptyCell.setBorderWidthLeft(1.5f);
+		emptyCell.setBorderWidthTop(1.5f);
+		emptyCell.setBorderWidthRight(1.5f);
 		emptyCell.setBorderWidthBottom(1.5f);
 		table.addCell(emptyCell);
 		PdfPCell sumDistanceValueCell = new PdfPCell(new Phrase(calcSummaDistance(), middleFont));
 		sumDistanceValueCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 		sumDistanceValueCell.setBorderWidthBottom(1.5f);
+		sumDistanceValueCell.setBorderWidthTop(1.5f);
+		sumDistanceValueCell.setBorderWidthRight(1.5f);
 		table.addCell(sumDistanceValueCell);
 		table.completeRow();
 	}
 	
-	private void addFooterToPdf(Document doc) {
+	private void addFooterToPdf(Document doc) throws DocumentException {
 		
+		float[] firstRowColumnWidth = {4f};
+		PdfPTable firstRowTable = new PdfPTable(firstRowColumnWidth);
+		firstRowTable.getDefaultCell().setFixedHeight(15);
+		firstRowTable.setWidthPercentage(70f);
+		PdfPCell infoCell1 = new PdfPCell(new Phrase("Leadás: tárgy hónapot követõ hónap 1-jéig!", middleBoldFont));
+		infoCell1.setBorder(Rectangle.NO_BORDER);
+		firstRowTable.addCell(infoCell1);
+		firstRowTable.completeRow();
+		doc.add(firstRowTable);
+		
+		float[] secondRowColumnWidths = {20f, 11f, 3f};
+		PdfPTable secondRowTable = new PdfPTable(secondRowColumnWidths);
+		secondRowTable.getDefaultCell().setFixedHeight(15);
+		secondRowTable.setWidthPercentage(100f);
+		PdfPCell emptyCell1 = new PdfPCell(new Phrase(null, middleBoldFont));
+		emptyCell1.setBorder(Rectangle.NO_BORDER);
+		secondRowTable.addCell(emptyCell1);
+		PdfPCell infoCell2 = new PdfPCell(new Phrase("Munkába járás km elszámolás összege:", middleBoldFont));
+		secondRowTable.addCell(infoCell2);
+		PdfPCell sumCostCell = new PdfPCell(new Phrase(calcSummaTravelCost(), largeBoldFont));
+		sumCostCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		secondRowTable.addCell(sumCostCell);
+		secondRowTable.completeRow();
+		
+		PdfPCell emptyCell2 = new PdfPCell(new Phrase(null, middleBoldFont));
+		emptyCell2.setBorder(Rectangle.NO_BORDER);
+		secondRowTable.addCell(emptyCell2);
+		PdfPCell emptyCell3 = new PdfPCell(new Phrase(null, middleBoldFont));
+		emptyCell3.setBorder(Rectangle.NO_BORDER);
+		secondRowTable.addCell(emptyCell3);
+		middleFont.setColor(BaseColor.DARK_GRAY);
+		PdfPCell pricePerDistanceCell = new PdfPCell(
+				new Phrase("(" + templateFileManager.getTemplateFileData().getPricePerDistance() +" Ft/km)", middleFont));
+		pricePerDistanceCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		pricePerDistanceCell.setBorder(Rectangle.NO_BORDER);
+		secondRowTable.addCell(pricePerDistanceCell);
+		doc.add(secondRowTable);
+		secondRowTable.completeRow();
+		
+		float[] thirdRowColumnWidths = {15f, 10f, 15f};
+		PdfPTable thirdRowTable = new PdfPTable(thirdRowColumnWidths);
+		thirdRowTable.getDefaultCell().setFixedHeight(15);
+		thirdRowTable.setWidthPercentage(80f);
+		PdfPCell employerSignatureLineCell = new PdfPCell(new Phrase(" ", middleBoldFont));
+		employerSignatureLineCell.setBorderWidthLeft(0);
+		employerSignatureLineCell.setBorderWidthTop(0);
+		employerSignatureLineCell.setBorderWidthRight(0);
+		thirdRowTable.addCell(employerSignatureLineCell);
+		PdfPCell emptyCell4 = new PdfPCell(new Phrase(null, middleBoldFont));
+		emptyCell4.setBorderWidthLeft(0);
+		emptyCell4.setBorderWidthTop(0);
+		emptyCell4.setBorderWidthBottom(0);
+		emptyCell4.setBorderWidthRight(0);
+		thirdRowTable.addCell(emptyCell4);
+		PdfPCell workerSignatureLineCell = new PdfPCell(new Phrase(" ", middleBoldFont));
+		workerSignatureLineCell.setBorderWidthTop(0);
+		workerSignatureLineCell.setBorderWidthRight(0);
+		workerSignatureLineCell.setBorderWidthLeft(0);
+		thirdRowTable.addCell(workerSignatureLineCell);
+		thirdRowTable.completeRow();
+		
+		addEmptyRow(doc);
+		
+		middleFont.setColor(BaseColor.BLACK);
+		PdfPCell employerTextCell = new PdfPCell(new Phrase("egységvezetõ aláírása", middleFont));
+		employerTextCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		employerTextCell.setBorderWidthLeft(0);
+		employerTextCell.setBorderWidthTop(0);
+		employerTextCell.setBorderWidthBottom(0);
+		employerTextCell.setBorderWidthRight(0);
+		thirdRowTable.addCell(employerTextCell);
+		PdfPCell emptyCell5 = new PdfPCell(new Phrase(null, middleBoldFont));
+		emptyCell5.setBorderWidthLeft(0);
+		emptyCell5.setBorderWidthTop(0);
+		emptyCell5.setBorderWidthBottom(0);
+		emptyCell5.setBorderWidthRight(0);
+		thirdRowTable.addCell(emptyCell5);
+		PdfPCell workerTextCell = new PdfPCell(new Phrase("munkavállaló aláírása", middleFont));
+		workerTextCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		workerTextCell.setBorderWidthLeft(0);
+		workerTextCell.setBorderWidthTop(0);
+		workerTextCell.setBorderWidthBottom(0);
+		workerTextCell.setBorderWidthRight(0);
+		thirdRowTable.addCell(workerTextCell);
+		thirdRowTable.completeRow();
+		doc.add(thirdRowTable);
+	
+		addEmptyRow(doc);
+		
+		float[] lastRowColumnWidth = {30f};
+		PdfPTable lastRowTable = new PdfPTable(lastRowColumnWidth);
+		lastRowTable.getDefaultCell().setFixedHeight(15);
+		lastRowTable.setWidthPercentage(100f);
+		PdfPCell infoTextCell = new PdfPCell(
+				new Phrase("Az egységvezetõ aláírása nélkül a nyilvántartás alapján készült elszámolás nem fizethetõ ki!", middleFont));
+		infoTextCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		infoTextCell.setBorderWidthLeft(0);
+		infoTextCell.setBorderWidthTop(0);
+		infoTextCell.setBorderWidthBottom(0);
+		infoTextCell.setBorderWidthRight(0);
+		lastRowTable.addCell(infoTextCell);
+		lastRowTable.completeRow();
+		doc.add(lastRowTable);
+	}
+	
+	private void addEmptyRow(Document doc) throws DocumentException {
+		
+		float[] emptyRowColumnWidth = {30f};
+		PdfPTable emptyRowTable = new PdfPTable(emptyRowColumnWidth);
+		emptyRowTable.getDefaultCell().setFixedHeight(15);
+		emptyRowTable.setWidthPercentage(100f);
+		PdfPCell emptyCell = new PdfPCell(
+				new Phrase(" ", middleFont));
+		emptyCell.setBorderWidthLeft(0);
+		emptyCell.setBorderWidthTop(0);
+		emptyCell.setBorderWidthBottom(0);
+		emptyCell.setBorderWidthRight(0);
+		emptyRowTable.addCell(emptyCell);
+		emptyRowTable.completeRow();
+		doc.add(emptyRowTable);
 	}
 	
 	private String calcSummaDistance() {
@@ -365,23 +516,49 @@ public class PdfManager {
 			}
 		}
 		
-		Double sumDistance = travelCounter * 
+		sumDistance = travelCounter * 
 				Double.parseDouble(templateFileManager.getTemplateFileData().getDistance());
 		
 		return sumDistance % 1 == 0 ? sumDistance.toString()
-				.substring(0, sumDistance.toString().indexOf(".")) + " km" : sumDistance.toString() + " km";
+				.substring(0, sumDistance.toString().indexOf(".")) + " km" : String.format("%.1f", sumDistance) + " km";
 	}
 	
-	public static void main(String[] args) {
+	private String calcSummaTravelCost() {
 		
-		MonthManager month = new MonthManager();
-		DaysOfMonthDisplayer displayer = new DaysOfMonthDisplayer();
-		displayer.addButtonsOfDaysToTheFrame(month.createMonth(2021, 7));
-		displayer.addOtherMonthAskingLabelsToTheFrame("2021. augusztus");
-		TemplateFileManager manager = new TemplateFileManager();
-		manager.readTemplateFile("G3Dolgozo.txt");
-		PdfManager pdf = new PdfManager();
-		pdf.setDaysButtonStore(displayer.getjButtonStoreForDays());
-		pdf.createAndOpenPDFile(displayer.getActualYearDotMonthAsString());
+		double summaTravelCost = 
+				sumDistance * Double.parseDouble(templateFileManager.getTemplateFileData().getPricePerDistance());
+		
+		int summaTravelCostIntegerValue = (int) Math.round(summaTravelCost);
+		int lastIntegerDigit = summaTravelCostIntegerValue % 10;
+		
+		switch (lastIntegerDigit) {
+		case 1:
+			summaTravelCostIntegerValue --;
+			break;
+		case 2:
+			summaTravelCostIntegerValue -= 2;
+			break;
+		case 3:
+			summaTravelCostIntegerValue += 2;
+			break;
+		case 4:
+			summaTravelCostIntegerValue ++;
+			break;
+		case 6:
+			summaTravelCostIntegerValue --;
+			break;
+		case 7:
+			summaTravelCostIntegerValue -= 2;
+			break;
+		case 8:
+			summaTravelCostIntegerValue += 2;
+			break;
+		case 9:
+			summaTravelCostIntegerValue ++;
+		}
+		
+		DecimalFormat decimalFormat = new DecimalFormat("###,###.### Ft");
+		
+		return decimalFormat.format(summaTravelCostIntegerValue);
 	}
 }
