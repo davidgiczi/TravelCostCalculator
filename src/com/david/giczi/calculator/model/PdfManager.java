@@ -37,6 +37,7 @@ public class PdfManager {
 	private Font middleBoldFont;
 	private Font titleTextFont;
 	private Font largeBoldFont;
+	private Font emptyRowFont;
 	private Double sumDistance;
 	
 	
@@ -52,6 +53,7 @@ public class PdfManager {
 			middleBoldFont = new Font(baseFont, 8, Font.BOLD);
 			largeBoldFont = new Font(baseFont, 9, Font.BOLD);
 			titleTextFont = new Font(baseFont, 16, Font.BOLD);
+			emptyRowFont = new Font(baseFont, 1, Font.NORMAL);
 		} catch (DocumentException | IOException e) {
 			e.printStackTrace();
 		}
@@ -74,9 +76,12 @@ public class PdfManager {
 			doc.open();
 		
 			addHeaderToPdf(doc, yearDotMonth);
+			addEmptyRow(doc);
 			addTitleToPdf(doc);
+			addEmptyRow(doc);
 			addTableToPdf(doc, yearDotMonth);
 			addFooterToPdf(doc);
+			addEmptyRow(doc);
 			addLogoToPdf(doc);
 			
 			Desktop.getDesktop().open(new File(PDF_FOLDER_PATH + createPDFileName(yearDotMonth)));
@@ -415,6 +420,7 @@ public class PdfManager {
 		secondRowTable.completeRow();
 		
 		addEmptyRow(doc);
+		addEmptyRow(doc);
 		
 		float[] thirdRowColumnWidths = {15f, 10f, 15f};
 		PdfPTable thirdRowTable = new PdfPTable(thirdRowColumnWidths);
@@ -486,7 +492,7 @@ public class PdfManager {
 		PdfPTable emptyRowTable = new PdfPTable(emptyRowColumnWidth);
 		emptyRowTable.setWidthPercentage(100f);
 		PdfPCell emptyCell = new PdfPCell(
-				new Phrase(" ", middleFont));
+				new Phrase(" ", emptyRowFont));
 		emptyCell.setBorderWidthLeft(0);
 		emptyCell.setBorderWidthTop(0);
 		emptyCell.setBorderWidthBottom(0);
