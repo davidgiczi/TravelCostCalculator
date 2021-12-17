@@ -28,7 +28,7 @@ public class MonthManager {
 			dayOfWeekValue = 7;
 		}
 		else {
-			dayOfWeekValue--;
+			dayOfWeekValue --;
 		}
 		
 		return dayOfWeekValue;
@@ -168,7 +168,7 @@ public class MonthManager {
 			break;
 		case "december":
 			increasedValues[0] = 0;
-			increasedValues[1] = ++yearValue;	
+			increasedValues[1] = ++ yearValue;	
 		}
 		
 		return increasedValues;
@@ -184,7 +184,7 @@ public class MonthManager {
 		switch (monthName) {
 		case "január":
 			decreasedValues[0] = 11;
-			decreasedValues[1] = --yearValue;
+			decreasedValues[1] = -- yearValue;
 			break;
 		case "február":
 			decreasedValues[0] = 0;

@@ -48,7 +48,7 @@ public class PdfManager {
 		try {
 			BaseFont baseFont = BaseFont.createFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.EMBEDDED);
 			smallFont = new Font(baseFont, 6, Font.NORMAL);
-			middleFont = new Font(baseFont, 8, Font.NORMAL);
+			middleFont = new Font(baseFont, 7, Font.NORMAL);
 			middleBoldFont = new Font(baseFont, 8, Font.BOLD);
 			largeBoldFont = new Font(baseFont, 9, Font.BOLD);
 			titleTextFont = new Font(baseFont, 16, Font.BOLD);
@@ -74,12 +74,9 @@ public class PdfManager {
 			doc.open();
 		
 			addHeaderToPdf(doc, yearDotMonth);
-			addEmptyRow(doc);
 			addTitleToPdf(doc);
-			addEmptyRow(doc);
 			addTableToPdf(doc, yearDotMonth);
 			addFooterToPdf(doc);
-			addEmptyRow(doc);
 			addLogoToPdf(doc);
 			
 			Desktop.getDesktop().open(new File(PDF_FOLDER_PATH + createPDFileName(yearDotMonth)));
@@ -111,7 +108,6 @@ public class PdfManager {
 	private void addHeaderToPdf(Document doc, String yearDotMonth) throws DocumentException {
 		float[] columnWidths = {3f, 7f, 3f, 7f};
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.getDefaultCell().setFixedHeight(15);
 		table.setWidthPercentage(100f);
 		
 		PdfPCell employerNameTextCell = new PdfPCell(new Phrase("Cég neve:", middleFont));
@@ -169,7 +165,6 @@ public class PdfManager {
 	private void addTitleToPdf(Document doc) throws DocumentException {
 		float[] columnWidth = {20f};
 		PdfPTable table = new PdfPTable(columnWidth);
-		table.getDefaultCell().setFixedHeight(15);
 		table.setWidthPercentage(100f);
 		PdfPCell roadRegisterTextCell = new PdfPCell(new Phrase("Útnyilvántartás", titleTextFont));
 		roadRegisterTextCell.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -189,7 +184,7 @@ public class PdfManager {
 		
 		byte[] imageSource = this.getClass().getResourceAsStream("/logo/kesz_logo.png").readAllBytes(); 
 		Image logo = Image.getInstance(imageSource);
-		logo.scaleAbsolute(520, 60);
+		logo.scaleAbsolute(520, 50);
 		doc.add(logo);
 	}
 	
@@ -197,7 +192,6 @@ public class PdfManager {
 		float[] columnWidths = {2f, 3f, 9f, 9f, 5f, 3f, 3f};
 		middleFont.setColor(BaseColor.BLACK);
 		PdfPTable table = new PdfPTable(columnWidths);
-		table.getDefaultCell().setFixedHeight(15);
 		table.setWidthPercentage(100f);
 		
 		PdfPCell sszCell = new PdfPCell(new Phrase("Ssz.", middleFont));
@@ -385,7 +379,6 @@ public class PdfManager {
 		
 		float[] firstRowColumnWidth = {4f};
 		PdfPTable firstRowTable = new PdfPTable(firstRowColumnWidth);
-		firstRowTable.getDefaultCell().setFixedHeight(15);
 		firstRowTable.setWidthPercentage(70f);
 		PdfPCell infoCell1 = new PdfPCell(new Phrase("Leadás: tárgy hónapot követõ hónap 1-jéig!", middleBoldFont));
 		infoCell1.setBorder(Rectangle.NO_BORDER);
@@ -395,7 +388,6 @@ public class PdfManager {
 		
 		float[] secondRowColumnWidths = {20f, 11f, 3f};
 		PdfPTable secondRowTable = new PdfPTable(secondRowColumnWidths);
-		secondRowTable.getDefaultCell().setFixedHeight(15);
 		secondRowTable.setWidthPercentage(100f);
 		PdfPCell emptyCell1 = new PdfPCell(new Phrase(null, middleBoldFont));
 		emptyCell1.setBorder(Rectangle.NO_BORDER);
@@ -422,9 +414,10 @@ public class PdfManager {
 		doc.add(secondRowTable);
 		secondRowTable.completeRow();
 		
+		addEmptyRow(doc);
+		
 		float[] thirdRowColumnWidths = {15f, 10f, 15f};
 		PdfPTable thirdRowTable = new PdfPTable(thirdRowColumnWidths);
-		thirdRowTable.getDefaultCell().setFixedHeight(15);
 		thirdRowTable.setWidthPercentage(80f);
 		PdfPCell employerSignatureLineCell = new PdfPCell(new Phrase(" ", middleBoldFont));
 		employerSignatureLineCell.setBorderWidthLeft(0);
@@ -474,7 +467,6 @@ public class PdfManager {
 		
 		float[] lastRowColumnWidth = {30f};
 		PdfPTable lastRowTable = new PdfPTable(lastRowColumnWidth);
-		lastRowTable.getDefaultCell().setFixedHeight(15);
 		lastRowTable.setWidthPercentage(100f);
 		PdfPCell infoTextCell = new PdfPCell(
 				new Phrase("Az egységvezetõ aláírása nélkül a nyilvántartás alapján készült elszámolás nem fizethetõ ki!", middleFont));
@@ -492,7 +484,6 @@ public class PdfManager {
 		
 		float[] emptyRowColumnWidth = {30f};
 		PdfPTable emptyRowTable = new PdfPTable(emptyRowColumnWidth);
-		emptyRowTable.getDefaultCell().setFixedHeight(15);
 		emptyRowTable.setWidthPercentage(100f);
 		PdfPCell emptyCell = new PdfPCell(
 				new Phrase(" ", middleFont));

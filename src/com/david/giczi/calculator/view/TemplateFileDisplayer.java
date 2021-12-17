@@ -107,8 +107,8 @@ public class TemplateFileDisplayer {
 													  templateFileManager.getTemplateFileData().getEmployerAddress(), 
 													  templateFileManager.getTemplateFileData().getPlate().split("-")[0], 
 													  templateFileManager.getTemplateFileData().getPlate().split("-")[1], 
-													  String.valueOf(templateFileManager.getTemplateFileData().getDistance()), 
-													  String.valueOf(templateFileManager.getTemplateFileData().getPricePerDistance()), 
+													  templateFileManager.getTemplateFileData().getDistance(), 
+													  templateFileManager.getTemplateFileData().getPricePerDistance(), 
 													  templateFileManager.getTemplateFileData().getFileName()
 													  .substring(0, chosenTemplateFileName.length() - 4));
 				}
@@ -181,8 +181,8 @@ public class TemplateFileDisplayer {
 						templateFileManager.getTemplateFileData().getWorkerAddress(), 
 						templateFileManager.getTemplateFileData().getEmployerName(), 
 						templateFileManager.getTemplateFileData().getEmployerAddress(),
-						String.valueOf(templateFileManager.getTemplateFileData().getDistance()),
-						String.valueOf(templateFileManager.getTemplateFileData().getPricePerDistance()),
+						templateFileManager.getTemplateFileData().getDistance(),
+						templateFileManager.getTemplateFileData().getPricePerDistance(),
 						templateFileManager.getTemplateFileData().getFileName(),
 						templateFileManager.getTemplateFileData().getPlate())) {
 					
@@ -198,8 +198,8 @@ public class TemplateFileDisplayer {
 						templateFileManager.getTemplateFileData().getEmployerName(), 
 						templateFileManager.getTemplateFileData().getEmployerAddress(),
 						templateFileManager.getTemplateFileData().getPlate(),
-						String.valueOf(templateFileManager.getTemplateFileData().getDistance()),
-						String.valueOf(templateFileManager.getTemplateFileData().getPricePerDistance()));
+						templateFileManager.getTemplateFileData().getDistance(),
+						templateFileManager.getTemplateFileData().getPricePerDistance());
 			}
 		}
 	});

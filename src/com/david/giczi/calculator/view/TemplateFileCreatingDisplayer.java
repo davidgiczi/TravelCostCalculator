@@ -235,7 +235,8 @@ private void addSaveButtonToFrame() {
 					.isValidInputNumber(jTextFieldForTravelDistance.getText(),
 										jTextFieldForTravelPrice.getText())) {
 				
-				getWarningMessage("A \"Távolság\" és az \"Elszámolási díj\" mezõk értéke csak -ponttal elválasztott- pozitív szám lehet.", "Hibás adat");
+				getWarningMessage("A \"Távolság\" és az \"Elszámolási díj\" mezõk értéke csak "
+						+ "-szükség szerint ponttal elválasztott- pozitív szám lehet.", "Hibás adat");
 				return;
 			}
 			
