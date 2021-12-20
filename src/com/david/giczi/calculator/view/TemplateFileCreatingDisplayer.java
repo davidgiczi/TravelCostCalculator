@@ -101,8 +101,10 @@ private JMenuBar getMenuBar() {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(createTemplate.isEnabled()) {
 				jFrame.setVisible(false);
 				new TemplateFileDisplayer(new TemplateFileManager().getFileNames());
+				}
 			}
 		});
 		menuBar.add(createTemplate);

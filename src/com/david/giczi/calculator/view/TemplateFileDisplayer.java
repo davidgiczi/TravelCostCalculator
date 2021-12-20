@@ -143,8 +143,10 @@ public class TemplateFileDisplayer {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				if(addWorkDays.isEnabled()) {
 				 jFrame.setVisible(false);
 				 new DaysOfMonthDisplayerController().createDaysOfMonthDisplayer();
+				}
 			}
 		});
 		
