@@ -148,11 +148,45 @@ public class DaysOfMonthDisplayer {
 				
 			}
 		});
-		
+		JMenu addEventMenu = new JMenu("Esemény hozzáadása");
+		addEventMenu.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				
+			}
+		});
 		chooseTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		createPdfFile.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		addEventMenu.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		menuBar.add(chooseTemplate);
 		menuBar.add(createPdfFile);
+		menuBar.add(addEventMenu);
 		return menuBar;
 	}
 	
