@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,16 +26,18 @@ import com.david.giczi.calculator.model.TemplateFileManager;
 
 public class DaysOfMonthDisplayer {
 
-	private JFrame jFrame;
+			JFrame jFrame;
 	private Font font;
 	private JButton[] jButtonStoreForDays;
 	private JLabel yearDotMonthLabel;
+	private EventSettingDisplayer eventSettingDisplayer;
 	public static Color BLUE = new Color(212, 235, 242);
 	public static Color YELLOW = new Color(255, 255, 212);
+
 	
 	public DaysOfMonthDisplayer() {
-		
 		jFrame = new JFrame("Munkanapok megadása");
+		eventSettingDisplayer = new EventSettingDisplayer(this);
 	}
 	
 	public JButton[] getjButtonStoreForDays() {
@@ -45,6 +48,19 @@ public class DaysOfMonthDisplayer {
 		return yearDotMonthLabel.getText();
 	}
 
+	private String[] getActualMonthDaysValue() {
+		
+		List<String> daysValueAsList = new ArrayList<>();
+ 		
+		for(int i = 0; i < jButtonStoreForDays.length; i++) {
+			if( !jButtonStoreForDays[i].getText().isEmpty() ) {
+				daysValueAsList.add(jButtonStoreForDays[i].getText());
+			}
+		}
+		
+		return daysValueAsList.toArray(new String[daysValueAsList.size()]);
+	}
+	
 	public void setTitle(String fileName) {
 		jFrame.setTitle("Munkanapok megadása - " + fileName);
 	}
@@ -148,7 +164,7 @@ public class DaysOfMonthDisplayer {
 				
 			}
 		});
-		JMenu addEventMenu = new JMenu("Esemény hozzáadása");
+		JMenu addEventMenu; addEventMenu = new JMenu("Esemény hozzáadása");
 		addEventMenu.addMouseListener(new MouseListener() {
 			
 			@Override
@@ -172,13 +188,12 @@ public class DaysOfMonthDisplayer {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				
+			eventSettingDisplayer.getDisplayer(getActualMonthDaysValue());
+			jFrame.setEnabled(false);
 			}
 		});
 		chooseTemplate.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -283,9 +298,9 @@ public class DaysOfMonthDisplayer {
 				
 				rowPanel.add(jButtonStoreForDays[i * 7 + j]);
 			}
-			
 			jFrame.add(rowPanel);
 		}
+		
 	}
 	
 	public void addOtherMonthAskingLabelsToTheFrame(String yearDotMonth) {
@@ -323,10 +338,9 @@ public class DaysOfMonthDisplayer {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
 				jFrame.setVisible(false);
 				new DaysOfMonthDisplayerController().increaseMonth(yearDotMonth);
-				
+	
 			}
 		});
 		JLabel prevMonth= new JLabel("          <<");
@@ -360,10 +374,9 @@ public class DaysOfMonthDisplayer {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
 				jFrame.setVisible(false);
 				new DaysOfMonthDisplayerController().decreaseMonth(yearDotMonth);
-				
+			
 			}
 		});
 		yearDotMonthLabel= new JLabel(yearDotMonth);

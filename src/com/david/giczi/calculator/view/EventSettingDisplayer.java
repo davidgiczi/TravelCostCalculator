@@ -1,11 +1,11 @@
 package com.david.giczi.calculator.view;
 
-import java.awt.BorderLayout;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.Box;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
@@ -22,32 +21,80 @@ import javax.swing.border.TitledBorder;
 
 public class EventSettingDisplayer {
 
-	private JFrame jFrame;
+	public JFrame jFrame;
 	private JComboBox<String> jComboBox;
 	private JTextArea eventTextArea;
 	private JButton jOkButton = new JButton("Létrehoz");
 	private JPanel jPanel;
 	private Font font = new Font("Times New Roman", Font.BOLD, 20);
+	private DaysOfMonthDisplayer daysOfMonthDisplayer;
 	
 	
-	public EventSettingDisplayer(String monthDotYear) {
-		jFrame = new JFrame("Esemény létrehozása");
-		jPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		jPanel.setBorder ( new TitledBorder ( new EtchedBorder (), monthDotYear ) );
-		jComboBox = new JComboBox<>();
-		jComboBox.addItem("-");
-		addComboBoxToFrame();
-		addInputTextAreaToFrame();
-		addOkButtonToFrame();
+	public EventSettingDisplayer(DaysOfMonthDisplayer daysOfMonthDisplayer) {
+		this.daysOfMonthDisplayer = daysOfMonthDisplayer;
 	}
 	
-	public void getDisplayer() {
-		
-		jFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	public void setDaysOfMonthDisplayer(DaysOfMonthDisplayer daysOfMonthDisplayer) {
+		this.daysOfMonthDisplayer = daysOfMonthDisplayer;
+	}
+
+	public void getDisplayer(String[] actualDays) {
+		jFrame = new JFrame("Esemény létrehozása");
+		jPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		jComboBox = new JComboBox<>(actualDays);
+		jFrame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		jFrame.addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+			jFrame.setVisible(false);
+			daysOfMonthDisplayer.jFrame.setEnabled(true);
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 		jFrame.setSize(450, 350);
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setResizable(false);
+		jFrame.setAlwaysOnTop(true);
 		jFrame.setVisible(true);
+		addComboBoxToFrame();
+		addInputTextAreaToFrame();
+		addOkButtonToFrame();
 	}
 	
 	private void addComboBoxToFrame() {
@@ -72,6 +119,7 @@ public class EventSettingDisplayer {
 		JScrollPane scrollPane = new JScrollPane(eventTextArea,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(400, 200));
+		jPanel.setBorder (new TitledBorder (new EtchedBorder(), daysOfMonthDisplayer.getActualYearDotMonthAsString() ));
 		jPanel.add(scrollPane);
 	}
 	
@@ -81,8 +129,4 @@ public class EventSettingDisplayer {
 		jFrame.add(jPanel);
 	}
 		
-	public static void main(String[] args) {
-		
-		new EventSettingDisplayer("2022. január").getDisplayer();
-	}
 }
