@@ -392,4 +392,24 @@ public class DaysOfMonthDisplayer {
 		JOptionPane.showMessageDialog(null, infoMessage, titleMessage, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public void signEventDay(boolean isEventDay, String eventDay) {
+		
+		if(isEventDay) {
+			
+			for (JButton dayButton : jButtonStoreForDays) {
+				if(dayButton.getText().equals(eventDay)) {
+					dayButton.setForeground(Color.RED);
+				}
+			}
+		}
+		else {
+			
+			for (JButton dayButton : jButtonStoreForDays) {
+				if(dayButton.getText().equals(eventDay)) {
+					dayButton.setForeground(Color.BLACK);
+				}
+			}
+		}
+	}
+	
 }

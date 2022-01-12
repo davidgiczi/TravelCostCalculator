@@ -102,9 +102,9 @@ public class TemplateFileManager {
 				writer.newLine();
 				writer.write(data.getEmployerAddress());
 				writer.newLine();
-				writer.write(String.valueOf(data.getDistance()));
+				writer.write(data.getDistance());
 				writer.newLine();
-				writer.write(String.valueOf(data.getPricePerDistance()));
+				writer.write(data.getPricePerDistance());
 				writer.newLine();
 				writer.write(data.getPlate());
 				writer.newLine();
@@ -143,7 +143,7 @@ public class TemplateFileManager {
 			savedMonth = readSavedMonthFromTemplateFile(reader);
 			
 		} catch (IOException e) {
-			System.out.println("\'" + templateFile.getName() + "\' file cannot be created.");
+			System.out.println("\'" + templateFile.getName() + "\' file cannot be found.");
 			e.printStackTrace();
 		}
 		
