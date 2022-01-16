@@ -96,7 +96,7 @@ public class EventSettingDisplayer {
 				
 			}
 		});
-		jFrame.setSize(450, 350);
+		jFrame.setSize(450, 335);
 		jFrame.setLocationRelativeTo(null);
 		jFrame.setResizable(false);
 		jFrame.setAlwaysOnTop(true);
