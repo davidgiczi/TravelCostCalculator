@@ -20,32 +20,37 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import com.david.giczi.calculator.controller.DaysOfMonthDisplayerController;
+import com.david.giczi.calculator.listener.ShowEventListener;
 import com.david.giczi.calculator.model.Day;
+import com.david.giczi.calculator.model.EventFileManager;
+import com.david.giczi.calculator.model.MonthManager;
 import com.david.giczi.calculator.model.PdfManager;
 import com.david.giczi.calculator.model.TemplateFileManager;
 
 public class DaysOfMonthDisplayer {
 
+	private String yearDotMonth;
 			JFrame jFrame;
 	private Font font;
 	private JButton[] jButtonStoreForDays;
 	private JLabel yearDotMonthLabel;
+	private List<ShowEventListener> showEventListeners;
 	private EventSettingDisplayer eventSettingDisplayer;
+	private List<Day> eventDays;
 	public static Color BLUE = new Color(212, 235, 242);
 	public static Color YELLOW = new Color(255, 255, 212);
 
 	
-	public DaysOfMonthDisplayer() {
+	public DaysOfMonthDisplayer(String yearDotMonth) {
+		this.yearDotMonth = yearDotMonth;
 		jFrame = new JFrame("Munkanapok megadása");
 		eventSettingDisplayer = new EventSettingDisplayer(this);
+		showEventListeners = new ArrayList<>();
+		eventDays = new EventFileManager().getEventDaystInMonth(yearDotMonth);
 	}
-	
-	public JButton[] getjButtonStoreForDays() {
-		return jButtonStoreForDays;
-	}
-	
-	public String getActualYearDotMonthAsString() {
-		return yearDotMonthLabel.getText();
+		
+	public String getYearDotMonth() {
+		return yearDotMonth;
 	}
 
 	private String[] getActualMonthDaysValue() {
@@ -243,6 +248,12 @@ public class DaysOfMonthDisplayer {
 				}
 				
 				if(dayStore.get(i * 7 + j).getNumberOfMonth() != -1) {
+					
+	
+					if(addShowEventListener(dayStore.get(i * 7 + j).getNumberOfMonth())) {
+						signEventDay(true, dayStore.get(i * 7 + j).getNumberOfMonth());
+					}
+					
 					jButtonStoreForDays[i * 7 + j].setFont(font);
 					jButtonStoreForDays[i * 7 + j].setText(String.valueOf(dayStore.get(i * 7 + j).getNumberOfMonth()));
 					JButton dayButton = jButtonStoreForDays[i * 7 + j];
@@ -303,7 +314,7 @@ public class DaysOfMonthDisplayer {
 		
 	}
 	
-	public void addOtherMonthAskingLabelsToTheFrame(String yearDotMonth) {
+	public void addOtherMonthAskingLabelsToTheFrame() {
 
 		JPanel lastRowPanel = new JPanel();
 		lastRowPanel.setLayout(new BorderLayout());
@@ -392,24 +403,61 @@ public class DaysOfMonthDisplayer {
 		JOptionPane.showMessageDialog(null, infoMessage, titleMessage, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
-	public void signEventDay(boolean isEventDay, String eventDay) {
+	public void signEventDay(boolean isEventDay, int eventDayNumber) {
+		
+		int eventDayIndex = createEventDayArrayIndex(eventDayNumber);
 		
 		if(isEventDay) {
 			
-			for (JButton dayButton : jButtonStoreForDays) {
-				if(dayButton.getText().equals(eventDay)) {
-					dayButton.setForeground(Color.RED);
-				}
-			}
+		jButtonStoreForDays[eventDayIndex].setForeground(Color.RED);
+			
 		}
 		else {
 			
-			for (JButton dayButton : jButtonStoreForDays) {
-				if(dayButton.getText().equals(eventDay)) {
-					dayButton.setForeground(Color.BLACK);
-				}
-			}
+		jButtonStoreForDays[eventDayIndex].setForeground(Color.BLACK);
+		
 		}
+			
+	}
+		
+	public boolean addShowEventListener(int eventDayNumber) {
+	
+	int eventDayIndex = createEventDayArrayIndex(eventDayNumber);
+	
+	for (Day eventDay : eventDays) {
+		
+		if(eventDay.getNumberOfMonth() == eventDayNumber) {
+		ShowEventListener showEventListener = 
+		new ShowEventListener(eventDay.getEventText(), getYearDotMonth() + " " + eventDay.getNumberOfMonth() + ".", eventDayNumber);
+		showEventListeners.add(showEventListener);
+		jButtonStoreForDays[eventDayIndex].addMouseListener(showEventListener);
+		return true;
+		}
+		
+	}
+	return false;
+	}
+	
+	private int createEventDayArrayIndex(int eventDayNumber) {
+		int dayIndex =  new MonthManager().getFirstDayNumberOfFirstWeek();
+		return eventDayNumber == 1 ? dayIndex - 1 : dayIndex + eventDayNumber - 2;
+	}
+	
+	public void removeShowEventListener(int eventDayNumber) {
+		
+		int eventDayIndex = createEventDayArrayIndex(eventDayNumber);
+		ShowEventListener removedListener = null;
+		for (ShowEventListener showEventListener : showEventListeners) {
+			if(showEventListener.getEvenDayNumber() == eventDayNumber) {
+				removedListener = showEventListener;
+			}
+			
+		}
+		
+		if(removedListener != null) {
+			jButtonStoreForDays[eventDayIndex].removeMouseListener(removedListener);	
+		}
+		
 	}
 	
 }

@@ -24,6 +24,7 @@ import javax.swing.border.TitledBorder;
 import com.david.giczi.calculator.model.Day;
 import com.david.giczi.calculator.model.EventFileManager;
 import com.david.giczi.calculator.model.MonthManager;
+import com.david.giczi.calculator.model.TemplateFileManager;
 
 
 
@@ -117,7 +118,7 @@ public class EventSettingDisplayer {
 			public void actionPerformed(ActionEvent e) {
 			
 				int dayValue = Integer.parseInt(jComboBox.getSelectedItem().toString());
-				String dayOfMonthFileName = createEventFileName(daysOfMonthDisplayer.getActualYearDotMonthAsString(), new Day(dayValue));
+				String dayOfMonthFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), new Day(dayValue));
 				eventTextArea.setText(new EventFileManager().readEventFile(dayOfMonthFileName));
 			}
 		});
@@ -134,12 +135,12 @@ public class EventSettingDisplayer {
 		eventTextArea.setFont(font);
 		eventTextArea.setForeground(textColor);
 		eventTextArea.setLineWrap(true);
-		String firstDayOfMonthFileName = createEventFileName(daysOfMonthDisplayer.getActualYearDotMonthAsString(), new Day(1));
+		String firstDayOfMonthFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), new Day(1));
 		eventTextArea.setText(new EventFileManager().readEventFile(firstDayOfMonthFileName));
 		JScrollPane scrollPane = new JScrollPane(eventTextArea,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(400, 200));
-		jPanel.setBorder (new TitledBorder (new EtchedBorder(), daysOfMonthDisplayer.getActualYearDotMonthAsString() ));
+		jPanel.setBorder (new TitledBorder (new EtchedBorder(), daysOfMonthDisplayer.getYearDotMonth()));
 		jPanel.add(scrollPane);
 	}
 	
@@ -152,25 +153,25 @@ public class EventSettingDisplayer {
 			public void actionPerformed(ActionEvent e) {
 			
 			String eventFileName;
-			String eventDay = jComboBox.getSelectedItem().toString();
+			int eventDay = Integer.parseInt(jComboBox.getSelectedItem().toString());
 				
 			if(eventTextArea.getText().trim().isBlank()) {
-				eventFileName = createEventFileName(daysOfMonthDisplayer.getActualYearDotMonthAsString(), 
-						new Day(Integer.parseInt(eventDay)));
+				eventFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), 
+						new Day(eventDay));
 				new EventFileManager().deleteEventFile(eventFileName);
-				daysOfMonthDisplayer.signEventDay(false, eventDay);
-				closeEventWindow();
+				createDaysOfMonthDisplayer(daysOfMonthDisplayer);
+				jFrame.setVisible(false);
 				return;
 			}
 					
 			String[] eventTextStore = eventTextArea.getText().split("\\n");
-			eventFileName = createEventFileName(daysOfMonthDisplayer.getActualYearDotMonthAsString(), 
-					new Day(Integer.parseInt(jComboBox.getSelectedItem().toString()), Arrays.asList(eventTextStore)));
+			eventFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), 
+					new Day(Integer.parseInt(jComboBox.getSelectedItem().toString()), createEventString(eventTextStore)));
 			
 			new EventFileManager().saveEventFile(eventFileName, Arrays.asList(eventTextStore));
-			daysOfMonthDisplayer.signEventDay(true, eventDay);
-			closeEventWindow();
-			
+			createDaysOfMonthDisplayer(daysOfMonthDisplayer);
+			jFrame.setVisible(false);
+	
 			}
 		});
 		
@@ -182,7 +183,7 @@ public class EventSettingDisplayer {
 		
 		return "Event_"  + new MonthManager()
 				.getDateOfDay(daysOfMonthDisplayer
-				.getActualYearDotMonthAsString(), dayOfEvent)
+				.getYearDotMonth(), dayOfEvent)
 				.replace(".", "_");
 	}
 	
@@ -191,4 +192,26 @@ public class EventSettingDisplayer {
 		daysOfMonthDisplayer.jFrame.setEnabled(true);
 	}
 	
+	private String createEventString(String[] eventTextStore) {
+		
+		StringBuilder eventFileBuilder = new StringBuilder();
+		
+		for (String row : eventTextStore) {
+			eventFileBuilder.append(row).append("\n");
+		}
+		
+		eventFileBuilder.setLength(eventFileBuilder.length() - 1);
+		
+		return eventFileBuilder.toString();
+	}
+	
+	private void createDaysOfMonthDisplayer(DaysOfMonthDisplayer daysOfMonthDisplayer) {
+		daysOfMonthDisplayer.jFrame.setVisible(false);
+		daysOfMonthDisplayer = new DaysOfMonthDisplayer(new MonthManager().getActualYearAndMonthAsText());
+		daysOfMonthDisplayer.getDisplayer();
+		daysOfMonthDisplayer.setTitle(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
+		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
+		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(new MonthManager().createMonth());
+		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();
+	}
 }

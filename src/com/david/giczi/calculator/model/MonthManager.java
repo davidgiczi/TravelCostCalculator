@@ -12,17 +12,19 @@ public class MonthManager {
 	public static int ACTUAL_MONTH = Calendar.getInstance().get(Calendar.MONTH);
 
 	
-	public int getDaysOfMonth(int yearValue, int monthValue) {
-		return YearMonth.of(yearValue, monthValue + 1).lengthOfMonth();
+	public int getDaysOfMonth() {
+		return YearMonth.of(ACTUAL_YEAR, ACTUAL_MONTH + 1).lengthOfMonth();
 	}
 	
-	public int getFirstDayOfMonthDayOfWeekValue(int yearValue, int monthValue) {
-		
+	public int getDayOfWeekValue() {
 		Calendar calendar = Calendar.getInstance();
-				
-		calendar.set(yearValue, monthValue, 1);
+		calendar.set(ACTUAL_YEAR, ACTUAL_MONTH, 1);
+		return  calendar.get(Calendar.DAY_OF_WEEK);
+	}
+	
+	public int getFirstDayNumberOfFirstWeek() {
 		
-		int dayOfWeekValue = calendar.get(Calendar.DAY_OF_WEEK);
+		int dayOfWeekValue = getDayOfWeekValue();
 		
 		if(dayOfWeekValue == 1) {
 			dayOfWeekValue = 7;
@@ -114,7 +116,7 @@ public class MonthManager {
 		+ (day.getNumberOfMonth() < 10 ? "0" + day.getNumberOfMonth() : day.getNumberOfMonth());
 	}
 	
-	public Integer[] increaseMonth(String yearDotMonth) {
+	public void increaseMonth(String yearDotMonth) {
 		
 		String[] yearDotMonthComponents = yearDotMonth.split("\\.");
 		int yearValue = Integer.parseInt(yearDotMonthComponents[0]);
@@ -171,10 +173,11 @@ public class MonthManager {
 			increasedValues[1] = ++ yearValue;	
 		}
 		
-		return increasedValues;
+		ACTUAL_MONTH = increasedValues[0];
+		ACTUAL_YEAR = increasedValues[1];
 	}
 	
-	public Integer[] decreaseMonth(String yearDotMonth) {
+	public void decreaseMonth(String yearDotMonth) {
 		
 		String[] yearDotMonthComponents = yearDotMonth.split("\\.");
 		int yearValue = Integer.parseInt(yearDotMonthComponents[0]);
@@ -231,14 +234,15 @@ public class MonthManager {
 			decreasedValues[1] = yearValue;	
 		}
 		
-		return decreasedValues;
+		ACTUAL_MONTH = decreasedValues[0];
+		ACTUAL_YEAR = decreasedValues[1];
 	}
 	
 	public String getActualYearAndMonthAsText() {
 		return ACTUAL_YEAR + ". " + getMonthName(ACTUAL_MONTH);
 	}
 	
-	public List<Day> createMonth(int yearValue, int monthValue){
+	public List<Day> createMonth(){
 		
 	List<Day> month = new ArrayList<>();
 	int dayCounter = 1;
@@ -247,13 +251,13 @@ public class MonthManager {
 		
 		Day day = new Day();
 		
-		if( i < getFirstDayOfMonthDayOfWeekValue(yearValue, monthValue) || 
-				i >= getFirstDayOfMonthDayOfWeekValue(yearValue, monthValue) + getDaysOfMonth(yearValue, monthValue) ) {
+		if( i < getFirstDayNumberOfFirstWeek() || 
+				i >= getFirstDayNumberOfFirstWeek() + getDaysOfMonth()) {
 			
 			day.setNumberOfMonth(-1);
 		}
-		else if( i >= getFirstDayOfMonthDayOfWeekValue(yearValue, monthValue) &&
-				getFirstDayOfMonthDayOfWeekValue(yearValue, monthValue) + getDaysOfMonth(yearValue, monthValue) > i ) {
+		else if( i >= getFirstDayNumberOfFirstWeek() &&
+				getFirstDayNumberOfFirstWeek() + getDaysOfMonth() > i ) {
 			
 			day.setNumberOfMonth(dayCounter++);
 		}
@@ -268,11 +272,11 @@ public class MonthManager {
 		month.add(day);
 	}
 	
-		return addPublicHolidaysToMonth(month, monthValue);
+		return addPublicHolidaysToMonth(month);
 	}
 
 	
-	private List<Day> addPublicHolidaysToMonth(List<Day> month, int monthValue){
+	private List<Day> addPublicHolidaysToMonth(List<Day> month){
 		
 		for (String publicHoliday : PUBLIC_HOLIDAYS) {
 			
@@ -282,7 +286,7 @@ public class MonthManager {
 			
 			for (Day day : month) {
 				
-				if(monthValueOfPublicHoliday == monthValue && 
+				if(monthValueOfPublicHoliday == ACTUAL_MONTH && 
 						dayValueOfPublicHoliday == day.getNumberOfMonth()) {
 					
 					day.setWorkDay(false);
@@ -295,5 +299,6 @@ public class MonthManager {
 		
 		return month;
 	}
+	
 	
 }

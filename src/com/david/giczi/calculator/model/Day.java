@@ -1,12 +1,10 @@
 package com.david.giczi.calculator.model;
 
-import java.util.List;
-
 public class Day {
 
 	private int numberOfMonth;
 	private boolean isWorkDay;
-	private List<String> eventTextStore;
+	private String eventText;
 	
 	public Day() {
 	}
@@ -16,9 +14,9 @@ public class Day {
 		this.numberOfMonth = numberOfMonth;
 	}
 
-	public Day(int numberOfMonth, List<String> eventTextStore) {
+	public Day(int numberOfMonth, String eventText) {
 		this.numberOfMonth = numberOfMonth;
-		this.eventTextStore = eventTextStore;
+		this.eventText = eventText;
 	}
 
 	public Day(int numberOfMonth, boolean isWorkDay) {
@@ -26,28 +24,35 @@ public class Day {
 		this.numberOfMonth = numberOfMonth;
 		this.isWorkDay = isWorkDay;
 	}
+
 	public int getNumberOfMonth() {
 		return numberOfMonth;
-	}
-	public boolean isWorkDay() {
-		return isWorkDay;
 	}
 
 	public void setNumberOfMonth(int numberOfMonth) {
 		this.numberOfMonth = numberOfMonth;
 	}
 
+	public String getEventText() {
+		return eventText;
+	}
+
+	public void setEventText(String eventText) {
+		this.eventText = eventText;
+	}
+
+	public boolean isWorkDay() {
+		return isWorkDay;
+	}
+
 	public void setWorkDay(boolean isWorkDay) {
 		this.isWorkDay = isWorkDay;
 	}
 
-	public List<String> getEventTextStore() {
-		return eventTextStore;
+	@Override
+	public String toString() {
+		return "Day [numberOfMonth=" + numberOfMonth + ", isWorkDay=" + isWorkDay + ", eventText=" + eventText
+				+ "]";
 	}
-
-	public void setEventTextStore(List<String> eventTextStore) {
-		this.eventTextStore = eventTextStore;
-	}
-
 	
 }

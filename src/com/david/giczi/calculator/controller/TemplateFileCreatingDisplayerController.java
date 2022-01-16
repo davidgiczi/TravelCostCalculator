@@ -45,7 +45,7 @@ public class TemplateFileCreatingDisplayerController {
 		}
 		else {
 			
-			actualMonth = monthManager.createMonth(MonthManager.ACTUAL_YEAR, MonthManager.ACTUAL_MONTH);
+			actualMonth = monthManager.createMonth();
 		
 		}
 		

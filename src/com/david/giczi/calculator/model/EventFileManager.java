@@ -5,25 +5,25 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EventFileManager {
 
 	
 	private final String FILE_PATH = "./TravelCostCalculatorData/Events";
-	
+	private File eventFolder = new File(FILE_PATH);
 	
 	public void saveEventFile(String fileName, List<String> eventTextStore) {
 		
-		File eventFolder = new File(FILE_PATH);
-		File eventFile = new File(FILE_PATH + "/" + fileName + ".txt");
-		
-		if( !eventFolder.exists() ) {
-			eventFolder.mkdir();
+		if( !fileName.endsWith(".txt") ) {
+			fileName += ".txt";
 		}
 		
-		
+		File eventFile = new File(FILE_PATH + "/" + fileName);
+			
 		try(BufferedWriter writer = new BufferedWriter(
 				new FileWriter(eventFile))) {
 			
@@ -42,16 +42,24 @@ public class EventFileManager {
 	
 	public boolean deleteEventFile(String fileName) {
 		
-		return new File(FILE_PATH + "/" + fileName + ".txt").delete();
+		if( !fileName.endsWith(".txt") ) {
+			fileName += ".txt";
+		}
+		
+		return new File(FILE_PATH + "/" + fileName).delete();
 	}
 	
 	public String readEventFile(String fileName) {
 		
-		File eventFile = new File(FILE_PATH + "/" + fileName + ".txt");
+		if( !fileName.endsWith(".txt") ) {
+			fileName += ".txt";
+		}
+		
+		File eventFile = new File(FILE_PATH + "/" + fileName);
 		StringBuilder eventFileBuilder = new StringBuilder();
 	
 		if(eventFile.exists()) {
-		
+	
 		try(BufferedReader reader = new BufferedReader(new FileReader(eventFile))) {
 			String row;
 			while((row = reader.readLine()) != null) {
@@ -71,4 +79,36 @@ public class EventFileManager {
 		return "";
 	}
 	
+	public List<Day> getEventDaystInMonth(String yearDotMonth){
+		
+		String monthFileName = ("Event_" + new MonthManager()
+				.getDateOfDay(yearDotMonth, new Day(0))
+				.replace(".", "_"))
+				.substring(0, 13);
+		
+		if( !eventFolder.exists() ) {
+			eventFolder.mkdir();
+		}
+	
+		String[] eventFileNames = eventFolder.list(new FilenameFilter() {
+			
+			@Override
+			public boolean accept(File dir, String name) {
+				
+				return name.startsWith(monthFileName);
+			}
+		});
+		
+		List<Day> eventDays = new ArrayList<>();
+		
+		for (String fileName : eventFileNames) {
+			
+			Day eventDay = new Day(Integer.parseInt(fileName.substring(14, 16)), readEventFile(fileName));
+			eventDays.add(eventDay);
+		}
+		
+		return eventDays;
+	}
+	
+
 }

@@ -17,7 +17,7 @@ public class DaysOfMonthDisplayerController {
 	
 	public DaysOfMonthDisplayerController(){
 		monthManager = new MonthManager();
-		daysOfMonthDisplayer = new DaysOfMonthDisplayer();
+		daysOfMonthDisplayer = new DaysOfMonthDisplayer(monthManager.getActualYearAndMonthAsText());
 		templateFileManager = new TemplateFileManager();
 	}
 	
@@ -31,63 +31,62 @@ public class DaysOfMonthDisplayerController {
 			actualMonthDays = new ArrayList<>(templateFileManager.getSavedMonth());
 		}
 		else {
-			actualMonthDays =	monthManager.createMonth(MonthManager.ACTUAL_YEAR, MonthManager.ACTUAL_MONTH);
+			actualMonthDays =	monthManager.createMonth();
 		}
 		
 		daysOfMonthDisplayer.getDisplayer();
 		daysOfMonthDisplayer.setTitle(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
 		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(actualMonthDays);
-		daysOfMonthDisplayer
-		.addOtherMonthAskingLabelsToTheFrame(monthManager.getActualYearAndMonthAsText());
+		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();
 	}
 	
 	public void increaseMonth(String yearDotMonth) {
 		
-		Integer[] nextYearMonthComponents = monthManager.increaseMonth(yearDotMonth);
-		int nextMonth = nextYearMonthComponents[0];
-		int nextYear = nextYearMonthComponents[1];
+		monthManager.increaseMonth(yearDotMonth);
 		List<Day> nextMonthDays;
 		
-		if(isEqualActualMonthAndSavedMonthText(nextYear + ". " + new MonthManager().getMonthName(nextMonth))) {
+		if(isEqualActualMonthAndSavedMonthText(MonthManager.ACTUAL_YEAR + ". " + 
+		new MonthManager().getMonthName(MonthManager.ACTUAL_MONTH))) {
 			
 			templateFileManager.readTemplateFile(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 			nextMonthDays = new ArrayList<>(templateFileManager.getSavedMonth());
 			
 		}
 		else {
-			 nextMonthDays =	monthManager.createMonth(nextYear, nextMonth);
+			 nextMonthDays =	monthManager.createMonth();
 		}
 		
+		daysOfMonthDisplayer = new DaysOfMonthDisplayer(new MonthManager().getActualYearAndMonthAsText());
 		daysOfMonthDisplayer.getDisplayer();
 		daysOfMonthDisplayer.setTitle(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
 		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(nextMonthDays);
-		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame(nextYear + ". " + monthManager.getMonthName(nextMonth));
+		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();
 	}
 	
 	public void decreaseMonth(String yearDotMonth) {
 		
-		Integer[] previousYearMonthComponents = monthManager.decreaseMonth(yearDotMonth);
-		int previousMonth = previousYearMonthComponents[0];
-		int previousYear = previousYearMonthComponents[1];
+		monthManager.decreaseMonth(yearDotMonth);
 		List<Day> previousMonthDays;
 		
-		if(isEqualActualMonthAndSavedMonthText(previousYear + ". " + new MonthManager().getMonthName(previousMonth))) {
+		if(isEqualActualMonthAndSavedMonthText(MonthManager.ACTUAL_YEAR + ". " + 
+		new MonthManager().getMonthName(MonthManager.ACTUAL_MONTH))) {
 			
 			templateFileManager.readTemplateFile(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 			previousMonthDays = new ArrayList<>(templateFileManager.getSavedMonth());
 			
 		}
 		else {
-			 previousMonthDays = monthManager.createMonth(previousYear, previousMonth);
+			 previousMonthDays = monthManager.createMonth();
 		}
-
+		
+		daysOfMonthDisplayer = new DaysOfMonthDisplayer(new MonthManager().getActualYearAndMonthAsText());
 		daysOfMonthDisplayer.getDisplayer();
 		daysOfMonthDisplayer.setTitle(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
 		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(previousMonthDays);
-		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame(previousYear + ". " + monthManager.getMonthName(previousMonth));
+		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();
 	}
 	
 	
