@@ -38,10 +38,12 @@ public class EventSettingDisplayer {
 	private Font font = new Font("Times New Roman", Font.BOLD, 20);
 	private Color textColor = new Color(112, 128, 180);
 	private DaysOfMonthDisplayer daysOfMonthDisplayer;
-	
+	private TemplateFileManager templateFileManager;
 	
 	public EventSettingDisplayer(DaysOfMonthDisplayer daysOfMonthDisplayer) {
 		this.daysOfMonthDisplayer = daysOfMonthDisplayer;
+		templateFileManager = new TemplateFileManager();
+		templateFileManager.readTemplateFile(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
 	}
 	
 	public void setDaysOfMonthDisplayer(DaysOfMonthDisplayer daysOfMonthDisplayer) {
@@ -119,7 +121,10 @@ public class EventSettingDisplayer {
 			
 				int dayValue = Integer.parseInt(jComboBox.getSelectedItem().toString());
 				String dayOfMonthFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), new Day(dayValue));
-				eventTextArea.setText(new EventFileManager().readEventFile(dayOfMonthFileName));
+				eventTextArea.setText(new EventFileManager(templateFileManager
+														.getTemplateFileData()
+														.getWorkerName())
+														.readEventFile(dayOfMonthFileName));
 			}
 		});
 		JLabel jLabel = new JLabel("Az esemény napjának választása:");
@@ -136,7 +141,10 @@ public class EventSettingDisplayer {
 		eventTextArea.setForeground(textColor);
 		eventTextArea.setLineWrap(true);
 		String firstDayOfMonthFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), new Day(1));
-		eventTextArea.setText(new EventFileManager().readEventFile(firstDayOfMonthFileName));
+		eventTextArea.setText(new EventFileManager(templateFileManager
+													.getTemplateFileData()
+													.getWorkerName())
+													.readEventFile(firstDayOfMonthFileName));
 		JScrollPane scrollPane = new JScrollPane(eventTextArea,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(400, 200));
@@ -158,7 +166,10 @@ public class EventSettingDisplayer {
 			if(eventTextArea.getText().trim().isBlank()) {
 				eventFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), 
 						new Day(eventDay));
-				new EventFileManager().deleteEventFile(eventFileName);
+				new EventFileManager(templateFileManager
+									.getTemplateFileData()
+									.getWorkerName())
+									.deleteEventFile(eventFileName);
 				createDaysOfMonthDisplayer(daysOfMonthDisplayer);
 				jFrame.setVisible(false);
 				return;
@@ -168,7 +179,10 @@ public class EventSettingDisplayer {
 			eventFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), 
 					new Day(Integer.parseInt(jComboBox.getSelectedItem().toString()), createEventString(eventTextStore)));
 			
-			new EventFileManager().saveEventFile(eventFileName, Arrays.asList(eventTextStore));
+			new EventFileManager(templateFileManager
+								.getTemplateFileData()
+								.getWorkerName())
+								.saveEventFile(eventFileName, Arrays.asList(eventTextStore));
 			createDaysOfMonthDisplayer(daysOfMonthDisplayer);
 			jFrame.setVisible(false);
 	

@@ -94,6 +94,13 @@ public class EventDisplayer {
 		scrollPane.setPreferredSize(new Dimension(400, 200));
 		jPanel.setBorder (new TitledBorder (new EtchedBorder(), eventDate));
 		jPanel.add(scrollPane);
+		addCloseButtonToFrame(jPanel);
+		jFrame.add(jPanel);
+		
+	}
+	
+	private void addCloseButtonToFrame(JPanel jPanel) {
+		
 		JButton closeButton = new JButton("Bezár");
 		closeButton.addActionListener(new ActionListener() {
 			
@@ -105,9 +112,6 @@ public class EventDisplayer {
 			}
 		});
 		jPanel.add(closeButton);
-		jFrame.add(jPanel);
-		
 	}
-	
 	
 }

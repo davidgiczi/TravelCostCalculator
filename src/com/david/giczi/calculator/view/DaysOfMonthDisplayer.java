@@ -46,7 +46,12 @@ public class DaysOfMonthDisplayer {
 		jFrame = new JFrame("Munkanapok megadása");
 		eventSettingDisplayer = new EventSettingDisplayer(this);
 		showEventListeners = new ArrayList<>();
-		eventDays = new EventFileManager().getEventDaystInMonth(yearDotMonth);
+		TemplateFileManager templateFileManager = new TemplateFileManager();
+		templateFileManager.readTemplateFile(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
+		eventDays = new EventFileManager(templateFileManager
+										.getTemplateFileData()
+										.getWorkerName())
+										.getEventDaystInMonth(yearDotMonth);
 	}
 		
 	public String getYearDotMonth() {

@@ -13,8 +13,24 @@ import java.util.List;
 public class EventFileManager {
 
 	
-	private final String FILE_PATH = "./TravelCostCalculatorData/Events";
-	private File eventFolder = new File(FILE_PATH);
+	private static String FILE_PATH;
+	private File eventFolder;
+	
+	
+	public EventFileManager(String eventOwner) {
+		FILE_PATH = "./TravelCostCalculatorData/EventsOf" + 
+		createEventFolderName(eventOwner);
+		eventFolder = new File(FILE_PATH);
+	}
+	
+	private String createEventFolderName(String eventOwner) {
+		String[] eventOwnerNameComponents = eventOwner.trim().split("\\s+");
+		StringBuilder builder = new StringBuilder();
+		for (String component : eventOwnerNameComponents) {
+			builder.append(component);
+		}
+		return builder.toString();
+	}
 	
 	public void saveEventFile(String fileName, List<String> eventTextStore) {
 		
