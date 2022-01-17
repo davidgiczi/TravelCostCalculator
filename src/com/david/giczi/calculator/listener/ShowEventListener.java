@@ -7,17 +7,17 @@ import com.david.giczi.calculator.view.EventDisplayer;
 public class ShowEventListener implements MouseListener{
 
 	private EventDisplayer eventDisplayer;
-	private int evenDayNumber;
+	private int eventDayNumber;
 	
 		
-	public ShowEventListener(String eventText, String eventDate, int evenDayNumber) {
+	public ShowEventListener(String eventText, String eventDate, int eventDayNumber) {
 
 		eventDisplayer = new EventDisplayer(eventText, eventDate);
-		this.evenDayNumber = evenDayNumber;
+		this.eventDayNumber = eventDayNumber;
 	}
 	
-	public int getEvenDayNumber() {
-		return evenDayNumber;
+	public int getEventDayNumber() {
+		return eventDayNumber;
 	}
 
 	@Override

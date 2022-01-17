@@ -21,6 +21,10 @@ public class DaysOfMonthDisplayerController {
 		templateFileManager = new TemplateFileManager();
 	}
 	
+	public DaysOfMonthDisplayer getDaysOfMonthDisplayer() {
+		return daysOfMonthDisplayer;
+	}
+
 	public void createDaysOfMonthDisplayer() {
 		
 		List<Day> actualMonthDays;

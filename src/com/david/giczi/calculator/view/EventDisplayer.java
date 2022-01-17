@@ -1,13 +1,13 @@
 package com.david.giczi.calculator.view;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -102,6 +102,7 @@ public class EventDisplayer {
 	private void addCloseButtonToFrame(JPanel jPanel) {
 		
 		JButton closeButton = new JButton("Bezár");
+		closeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		closeButton.addActionListener(new ActionListener() {
 			
 			@Override

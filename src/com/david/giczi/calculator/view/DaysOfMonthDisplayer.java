@@ -453,7 +453,7 @@ public class DaysOfMonthDisplayer {
 		int eventDayIndex = createEventDayArrayIndex(eventDayNumber);
 		ShowEventListener removedListener = null;
 		for (ShowEventListener showEventListener : showEventListeners) {
-			if(showEventListener.getEvenDayNumber() == eventDayNumber) {
+			if(showEventListener.getEventDayNumber() == eventDayNumber) {
 				removedListener = showEventListener;
 			}
 			

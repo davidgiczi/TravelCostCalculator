@@ -21,6 +21,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+
+import com.david.giczi.calculator.controller.DaysOfMonthDisplayerController;
 import com.david.giczi.calculator.model.Day;
 import com.david.giczi.calculator.model.EventFileManager;
 import com.david.giczi.calculator.model.MonthManager;
@@ -170,7 +172,7 @@ public class EventSettingDisplayer {
 									.getTemplateFileData()
 									.getWorkerName())
 									.deleteEventFile(eventFileName);
-				createDaysOfMonthDisplayer(daysOfMonthDisplayer);
+				createDaysOfMonthDisplayer();
 				jFrame.setVisible(false);
 				return;
 			}
@@ -183,7 +185,7 @@ public class EventSettingDisplayer {
 								.getTemplateFileData()
 								.getWorkerName())
 								.saveEventFile(eventFileName, Arrays.asList(eventTextStore));
-			createDaysOfMonthDisplayer(daysOfMonthDisplayer);
+			createDaysOfMonthDisplayer();
 			jFrame.setVisible(false);
 	
 			}
@@ -219,13 +221,10 @@ public class EventSettingDisplayer {
 		return eventFileBuilder.toString();
 	}
 	
-	private void createDaysOfMonthDisplayer(DaysOfMonthDisplayer daysOfMonthDisplayer) {
+	private void createDaysOfMonthDisplayer() {
 		daysOfMonthDisplayer.jFrame.setVisible(false);
-		daysOfMonthDisplayer = new DaysOfMonthDisplayer(new MonthManager().getActualYearAndMonthAsText());
-		daysOfMonthDisplayer.getDisplayer();
-		daysOfMonthDisplayer.setTitle(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
-		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
-		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(new MonthManager().createMonth());
-		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();
+		DaysOfMonthDisplayerController daysOfMonthDisplayerController = new DaysOfMonthDisplayerController();
+		daysOfMonthDisplayerController.createDaysOfMonthDisplayer();
+		this.daysOfMonthDisplayer = daysOfMonthDisplayerController.getDaysOfMonthDisplayer();
 	}
 }
