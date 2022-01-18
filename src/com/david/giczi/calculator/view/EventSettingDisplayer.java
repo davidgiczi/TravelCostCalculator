@@ -122,7 +122,7 @@ public class EventSettingDisplayer {
 			public void actionPerformed(ActionEvent e) {
 			
 				int dayValue = Integer.parseInt(jComboBox.getSelectedItem().toString());
-				String dayOfMonthFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), new Day(dayValue));
+				String dayOfMonthFileName = createEventFileName(new Day(dayValue));
 				eventTextArea.setText(new EventFileManager(templateFileManager
 														.getTemplateFileData()
 														.getWorkerName())
@@ -142,7 +142,7 @@ public class EventSettingDisplayer {
 		eventTextArea.setFont(font);
 		eventTextArea.setForeground(textColor);
 		eventTextArea.setLineWrap(true);
-		String firstDayOfMonthFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), new Day(1));
+		String firstDayOfMonthFileName = createEventFileName(new Day(1));
 		eventTextArea.setText(new EventFileManager(templateFileManager
 													.getTemplateFileData()
 													.getWorkerName())
@@ -166,8 +166,7 @@ public class EventSettingDisplayer {
 			int eventDay = Integer.parseInt(jComboBox.getSelectedItem().toString());
 				
 			if(eventTextArea.getText().trim().isBlank()) {
-				eventFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), 
-						new Day(eventDay));
+				eventFileName = createEventFileName(new Day(eventDay));
 				new EventFileManager(templateFileManager
 									.getTemplateFileData()
 									.getWorkerName())
@@ -178,7 +177,7 @@ public class EventSettingDisplayer {
 			}
 					
 			String[] eventTextStore = eventTextArea.getText().split("\\n");
-			eventFileName = createEventFileName(daysOfMonthDisplayer.getYearDotMonth(), 
+			eventFileName = createEventFileName( 
 					new Day(Integer.parseInt(jComboBox.getSelectedItem().toString()), createEventString(eventTextStore)));
 			
 			new EventFileManager(templateFileManager
@@ -195,7 +194,7 @@ public class EventSettingDisplayer {
 		jFrame.add(jPanel);
 	}
 	
-	private String createEventFileName(String yearDotMonth, Day dayOfEvent) {
+	private String createEventFileName(Day dayOfEvent) {
 		
 		return "Event_"  + new MonthManager()
 				.getDateOfDay(daysOfMonthDisplayer

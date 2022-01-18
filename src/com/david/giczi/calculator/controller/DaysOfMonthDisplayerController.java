@@ -39,7 +39,7 @@ public class DaysOfMonthDisplayerController {
 		}
 		
 		daysOfMonthDisplayer.getDisplayer();
-		daysOfMonthDisplayer.setTitle(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
+		daysOfMonthDisplayer.setTitle(templateFileManager.getTemplateFileData().getWorkerName());
 		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
 		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(actualMonthDays);
 		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();
@@ -63,7 +63,7 @@ public class DaysOfMonthDisplayerController {
 		
 		daysOfMonthDisplayer = new DaysOfMonthDisplayer(new MonthManager().getActualYearAndMonthAsText());
 		daysOfMonthDisplayer.getDisplayer();
-		daysOfMonthDisplayer.setTitle(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
+		daysOfMonthDisplayer.setTitle(templateFileManager.getTemplateFileData().getWorkerName());
 		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
 		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(nextMonthDays);
 		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();
@@ -87,7 +87,7 @@ public class DaysOfMonthDisplayerController {
 		
 		daysOfMonthDisplayer = new DaysOfMonthDisplayer(new MonthManager().getActualYearAndMonthAsText());
 		daysOfMonthDisplayer.getDisplayer();
-		daysOfMonthDisplayer.setTitle(TemplateFileManager.ACTUAL_TEMPLATE_FILE_NAME);
+		daysOfMonthDisplayer.setTitle(templateFileManager.getTemplateFileData().getWorkerName());
 		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
 		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(previousMonthDays);
 		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();

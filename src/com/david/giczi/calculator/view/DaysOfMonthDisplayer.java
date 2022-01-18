@@ -71,8 +71,8 @@ public class DaysOfMonthDisplayer {
 		return daysValueAsList.toArray(new String[daysValueAsList.size()]);
 	}
 	
-	public void setTitle(String fileName) {
-		jFrame.setTitle("Munkanapok megadása - " + fileName);
+	public void setTitle(String workerName) {
+		jFrame.setTitle("Munkanapok megadása - " + workerName);
 	}
 	
 	public void getDisplayer() {
@@ -451,16 +451,12 @@ public class DaysOfMonthDisplayer {
 	public void removeShowEventListener(int eventDayNumber) {
 		
 		int eventDayIndex = createEventDayArrayIndex(eventDayNumber);
-		ShowEventListener removedListener = null;
+	
 		for (ShowEventListener showEventListener : showEventListeners) {
 			if(showEventListener.getEventDayNumber() == eventDayNumber) {
-				removedListener = showEventListener;
+				jButtonStoreForDays[eventDayIndex].removeMouseListener(showEventListener);
 			}
 			
-		}
-		
-		if(removedListener != null) {
-			jButtonStoreForDays[eventDayIndex].removeMouseListener(removedListener);	
 		}
 		
 	}

@@ -23,9 +23,9 @@ public class EventDisplayer {
 	private Font font = new Font("Times New Roman", Font.BOLD, 20);
 	private Color textColor = new Color(112, 128, 180);
 	
-	public EventDisplayer(String textOfEvent, String evenDate) {
+	public EventDisplayer(String textOfEvent, String eventDate) {
 		getDisplayer();
-		addTextAreaToFrame(textOfEvent, evenDate);
+		addTextAreaToFrame(textOfEvent, eventDate);
 	}
 	
 	private void getDisplayer() {
