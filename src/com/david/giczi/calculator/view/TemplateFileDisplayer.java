@@ -145,7 +145,7 @@ public class TemplateFileDisplayer {
 			public void mouseClicked(MouseEvent e) {
 				if(addWorkDays.isEnabled()) {
 				 jFrame.setVisible(false);
-				 new DaysOfMonthDisplayerController().createDaysOfMonthDisplayer();
+				 new DaysOfMonthDisplayerController().createDaysOfMonthDisplayer(true);
 				}
 			}
 		});

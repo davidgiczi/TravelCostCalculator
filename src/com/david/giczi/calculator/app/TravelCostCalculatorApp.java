@@ -19,7 +19,6 @@ public class TravelCostCalculatorApp {
 			fileManager.createDataFolder();
 		}
 	
-		
 	}
 	
 }

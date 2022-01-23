@@ -11,7 +11,6 @@ public class MonthManager {
 	public static int ACTUAL_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 	public static int ACTUAL_MONTH = Calendar.getInstance().get(Calendar.MONTH);
 
-	
 	public int getDaysOfMonth() {
 		return YearMonth.of(ACTUAL_YEAR, ACTUAL_MONTH + 1).lengthOfMonth();
 	}

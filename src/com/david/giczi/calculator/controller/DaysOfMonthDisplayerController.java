@@ -1,12 +1,17 @@
 package com.david.giczi.calculator.controller;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 import javax.swing.JButton;
 import com.david.giczi.calculator.model.Day;
+import com.david.giczi.calculator.model.EventFileManager;
 import com.david.giczi.calculator.model.MonthManager;
 import com.david.giczi.calculator.model.TemplateFileManager;
+import com.david.giczi.calculator.months.namedays.MonthData;
 import com.david.giczi.calculator.view.DaysOfMonthDisplayer;
+import com.david.giczi.calculator.view.NotificationDisplayer;
 
 public class DaysOfMonthDisplayerController {
 
@@ -25,7 +30,7 @@ public class DaysOfMonthDisplayerController {
 		return daysOfMonthDisplayer;
 	}
 
-	public void createDaysOfMonthDisplayer() {
+	public void createDaysOfMonthDisplayer(boolean isNotify) {
 		
 		List<Day> actualMonthDays;
 		
@@ -43,6 +48,9 @@ public class DaysOfMonthDisplayerController {
 		daysOfMonthDisplayer.addNamesOfDaysPanelToTheFrame();
 		daysOfMonthDisplayer.addButtonsOfDaysToTheFrame(actualMonthDays);
 		daysOfMonthDisplayer.addOtherMonthAskingLabelsToTheFrame();
+		if(isNotify) {
+		showNotificationDisplayer();
+		}
 	}
 	
 	public void increaseMonth(String yearDotMonth) {
@@ -113,6 +121,43 @@ public class DaysOfMonthDisplayerController {
 	
 	public void saveDisplayer(JButton[] dayButtonStore, String yearDotMonth) {
 		templateFileManager.saveDaysOfMonthDisplayer(dayButtonStore, yearDotMonth);
+	}
+	
+	private void showNotificationDisplayer() {
+		
+		int actualDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+		int actualMonth = Calendar.getInstance().get(Calendar.MONTH);
+		int actualYear = Calendar.getInstance().get(Calendar.YEAR);
+		
+		String date = actualYear + ". " + monthManager.getMonthName(actualMonth) + 
+						(actualDay < 10 ? " 0" + actualDay + "." : " " + actualDay + ".");
+		String firstNames = MonthData.getMonthDayNameStore(MonthManager.ACTUAL_MONTH)
+									.get(actualDay - 1); 
+		String officialEvent;
+		try {
+			
+			officialEvent = " - " +  MonthData
+							.getMonthDayDataStore(MonthManager.ACTUAL_MONTH)
+							.stream()
+							.filter(day -> day.getNumberOfMonth() == actualDay)
+							.findFirst()
+							.get()
+							.getEventText();
+			
+		} catch (NoSuchElementException e) {
+			officialEvent = "";
+		}
+		
+		String eventFileName = "Event_" + monthManager
+							   .getDateOfDay(daysOfMonthDisplayer.getYearDotMonth(), new Day(actualDay))
+							   .replace(".", "_");
+		String ownerEvent = new EventFileManager(templateFileManager.getTemplateFileData().getWorkerName())
+							.readEventFile(eventFileName);
+
+		if(NotificationDisplayer.isNotify) {
+			new NotificationDisplayer(date, firstNames, officialEvent, ownerEvent);
+		}
+		
 	}
 	
 }

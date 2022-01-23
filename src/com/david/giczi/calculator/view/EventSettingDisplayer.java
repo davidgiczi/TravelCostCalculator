@@ -223,7 +223,7 @@ public class EventSettingDisplayer {
 	private void createDaysOfMonthDisplayer() {
 		daysOfMonthDisplayer.jFrame.setVisible(false);
 		DaysOfMonthDisplayerController daysOfMonthDisplayerController = new DaysOfMonthDisplayerController();
-		daysOfMonthDisplayerController.createDaysOfMonthDisplayer();
+		daysOfMonthDisplayerController.createDaysOfMonthDisplayer(false);
 		this.daysOfMonthDisplayer = daysOfMonthDisplayerController.getDaysOfMonthDisplayer();
 	}
 }
