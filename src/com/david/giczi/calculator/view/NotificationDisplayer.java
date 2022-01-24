@@ -32,9 +32,9 @@ public class NotificationDisplayer {
 	private void getDisplayer(String date, String officialEvent) {
 		jFrame = new JFrame(date + officialEvent);
 		jFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		jFrame.setSize(450, 300);
+		jFrame.setSize(600, 200);
 		Double locationX = (getScreenWidth() - jFrame.getSize().getWidth())  / 2;
-		jFrame.setLocation(locationX.intValue(), 100);
+		jFrame.setLocation(locationX.intValue(), 30);
 		jFrame.setAlwaysOnTop(true);
 		jFrame.setResizable(false);
 	}
@@ -52,9 +52,10 @@ public class NotificationDisplayer {
 		eventTextArea.setLineWrap(true);
 		eventTextArea.setText(ownerEvent);
 		eventTextArea.setEditable(false);
+		eventTextArea.setBackground(new Color(220, 220, 220));
 		JScrollPane scrollPane = new JScrollPane(eventTextArea,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setPreferredSize(new Dimension(400, 200));
+		scrollPane.setPreferredSize(new Dimension(550, 100));
 		jPanel.setBorder (new TitledBorder (new EtchedBorder(), firstNames));
 		jPanel.add(scrollPane);
 		jFrame.add(jPanel);

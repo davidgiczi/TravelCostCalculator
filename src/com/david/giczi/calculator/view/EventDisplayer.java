@@ -89,6 +89,7 @@ public class EventDisplayer {
 		eventTextArea.setLineWrap(true);
 		eventTextArea.setText(textOfEvent);
 		eventTextArea.setEditable(false);
+		eventTextArea.setBackground(new Color(220, 220, 220));
 		JScrollPane scrollPane = new JScrollPane(eventTextArea,
 				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setPreferredSize(new Dimension(400, 200));
