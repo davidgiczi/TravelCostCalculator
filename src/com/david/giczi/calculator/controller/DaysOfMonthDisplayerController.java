@@ -131,13 +131,13 @@ public class DaysOfMonthDisplayerController {
 		
 		String date = actualYear + ". " + monthManager.getMonthName(actualMonth) + 
 						(actualDay < 10 ? " 0" + actualDay + "." : " " + actualDay + ".");
-		String firstNames = MonthData.getMonthDayNameStore(MonthManager.ACTUAL_MONTH)
+		String firstNames = MonthData.getMonthDayNameStore(actualMonth)
 									.get(actualDay - 1); 
 		String officialEvent;
 		try {
 			
 			officialEvent = " - " +  MonthData
-							.getMonthDayDataStore(MonthManager.ACTUAL_MONTH)
+							.getMonthDayDataStore(actualMonth)
 							.stream()
 							.filter(day -> day.getNumberOfMonth() == actualDay)
 							.findFirst()
@@ -149,7 +149,7 @@ public class DaysOfMonthDisplayerController {
 		}
 		
 		String eventFileName = "Event_" + monthManager
-							   .getDateOfDay(daysOfMonthDisplayer.getYearDotMonth(), new Day(actualDay))
+							   .getDateOfDay(actualYear + ". " + monthManager.getMonthName(actualMonth), new Day(actualDay))
 							   .replace(".", "_");
 		String ownerEvent = new EventFileManager(templateFileManager.getTemplateFileData().getWorkerName())
 							.readEventFile(eventFileName);

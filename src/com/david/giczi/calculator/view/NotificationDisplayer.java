@@ -35,7 +35,6 @@ public class NotificationDisplayer {
 		jFrame.setSize(600, 200);
 		Double locationX = (getScreenWidth() - jFrame.getSize().getWidth())  / 2;
 		jFrame.setLocation(locationX.intValue(), 30);
-		jFrame.setAlwaysOnTop(true);
 		jFrame.setResizable(false);
 	}
 	
